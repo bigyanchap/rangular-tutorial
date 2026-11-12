@@ -1,0 +1,38 @@
+<section>
+  <card *ngIf="lesson">
+    <label>Lesson {{ lesson.id }}</label>
+    <h2>{{ lesson.title }}</h2>
+    <p>{{ lesson.intro }}</p>
+  </card>
+  <p *ngIf="!lesson">This lesson could not be found.</p>
+  <card *ngIf="lesson">
+    <label>Code to remember</label>
+    <p>{{ lesson.code }}</p>
+  </card>
+  <card *ngIf="lessonId === 3">
+    <label>Live demo: interpolation</label>
+    <h3>Hello, {{ name }}</h3>
+    <p *ngIf="greeted">The name field changed, and the screen followed on its own.</p>
+    <button (click)="changeName()">Change the name</button>
+  </card>
+  <card *ngIf="lessonId === 4">
+    <label>Live demo: event binding</label>
+    <h1>{{ count }}</h1>
+    <button (click)="increment()">Increment</button>
+    <button (click)="decrement()" [disabled]="count === 0">Decrement</button>
+  </card>
+  <card *ngIf="lessonId === 5">
+    <label>Live demo: property binding and ngIf</label>
+    <h1>{{ count }}</h1>
+    <button (click)="increment()">Increment</button>
+    <button (click)="reset()" [disabled]="count === 0">Reset</button>
+    <p *ngIf="count >= 5">Past five. Keep going.</p>
+    <p *ngIf="count === 0">Reset is disabled while the count is zero. That is property binding at work.</p>
+  </card>
+  <card *ngIf="lesson">
+    <label>Good practice</label>
+    <p *ngIf="showTip">{{ lesson.tip }}</p>
+    <button (click)="toggleTip()">Hide or show the tip</button>
+  </card>
+  <button (click)="backHome()">Back to all lessons</button>
+</section>
