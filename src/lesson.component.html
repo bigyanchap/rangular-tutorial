@@ -1,4 +1,5 @@
 <section>
+  <button variant="text" routerLink="/home">Back to all lessons</button>
   <card *ngIf="lesson">
     <label>Lesson {{ lesson.id }}</label>
     <h2>{{ lesson.title }}</h2>
@@ -31,8 +32,6 @@
   </card>
   <card *ngIf="lesson">
     <label>Good practice</label>
-    <p *ngIf="showTip">{{ lesson.tip }}</p>
-    <button (click)="toggleTip()">Hide or show the tip</button>
+    <p>{{ lesson.tip }}</p>
   </card>
-  <button (click)="backHome()">Back to all lessons</button>
 </section>

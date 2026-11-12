@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LessonService } from './lesson.service';
 
 @Component({
@@ -12,11 +12,9 @@ export class LessonComponent {
   count = 0;
   name = 'Bigyan';
   greeted = false;
-  showTip = true;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private lessonService: LessonService,
   ) {}
 
@@ -40,13 +38,5 @@ export class LessonComponent {
   changeName() {
     this.greeted = true;
     this.name = 'Rangular developer';
-  }
-
-  toggleTip() {
-    this.showTip = !this.showTip;
-  }
-
-  backHome() {
-    this.router.navigate(['/home']);
   }
 }
