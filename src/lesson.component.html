@@ -1,5 +1,5 @@
 <section>
-  <button variant="text" routerLink="/home">Back to all lessons</button>
+  <icon-button name="chevron-left" routerLink="/home"></icon-button>
   <card *ngIf="lesson">
     <label>Lesson {{ lesson.id }}</label>
     <h2>{{ lesson.title }}</h2>
