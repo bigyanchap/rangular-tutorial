@@ -12,11 +12,12 @@ type Lesson = {
 };
 
 /**
- * Home: the app bar with the menu, the lesson list in two
- * groups (getting started, then components and templates), and
- * the coming next card. The two groups are split from the one
- * lessons array in ngOnInit, because a row carries one
- * structural directive and the split belongs in the class.
+ * Home: the app bar with the menu, the lesson list in three
+ * groups (getting started, components and templates, then
+ * forms and interaction), and the coming next card. The
+ * groups are split from the one lessons array in ngOnInit,
+ * because a row carries one structural directive and the
+ * split belongs in the class.
  */
 @Component({
   selector: 'app-home',
@@ -26,12 +27,14 @@ export class HomeComponent {
   menuOpen = false;
   starterLessons: Lesson[] = [];
   batchLessons: Lesson[] = [];
+  formsLessons: Lesson[] = [];
 
   constructor(private lessons: LessonService) {}
 
   ngOnInit() {
     this.starterLessons = this.lessons.lessons.filter((l: Lesson) => l.id <= 5);
-    this.batchLessons = this.lessons.lessons.filter((l: Lesson) => l.id >= 6);
+    this.batchLessons = this.lessons.lessons.filter((l: Lesson) => l.id >= 6 && l.id <= 25);
+    this.formsLessons = this.lessons.lessons.filter((l: Lesson) => l.id >= 26);
   }
 
   openMenu() {

@@ -1,0 +1,8 @@
+<form [formGroup]="profileForm">
+  <input label="Name" placeholder="Your name" formControlName="name">
+  <input label="City" placeholder="Your city" formControlName="city">
+  <p>Name dirty: {{ profileForm.get('name').dirty ? 'yes' : 'no' }}</p>
+  <p>Name changes reported by valueChanges: {{ changes }}</p>
+  <button (click)="fillSample()">Fill a sample</button>
+  <button (click)="clearAll()">Clear</button>
+</form>

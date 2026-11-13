@@ -16,7 +16,7 @@ gap, this app will find it.
 
 This app will be published on the App Store and Google Play. This
 build carries the foundation: splash screen, lesson engine, and
-lessons 1 to 25.
+lessons 1 to 45.
 
 ## Run it on your Mac and phone
 
@@ -47,9 +47,10 @@ repo cloned to run the tutorial.
   framework 0.1.2). The Splash screen has no app bar, by design.
 - Splash screen: what Rangular is and what this app is, in two short
   cards, with a Start learning button.
-- Home: the lesson list in two groups (lessons 1 to 5, then
-  lessons 6 to 25), with a how to use card and a coming next card.
-  About lives in the menu now, not in a list on Home.
+- Home: the lesson list in three groups (lessons 1 to 5, lessons
+  6 to 25, then lessons 26 to 45), with a how to use card and a
+  coming next card. About lives in the menu now, not in a list
+  on Home.
 - Lessons 1 to 5, each with the same layout: a header card with the
   explanation, a Code section showing the lesson's code in the
   framework's editor styled code block, a live demo where the topic
@@ -93,6 +94,47 @@ repo cloned to run the tutorial.
   24. Chips, badges, and progress: filters, counts, a storage bar,
       and a sync spinner
   25. Theming: a small screen bound light and dark by one switcher
+- Lessons 26 to 45 (Batch 2: forms and interaction), in the same
+  layout, each with a live demo component:
+  26. Template driven forms with ngModel: name and city fields,
+      and a greeting built from the fields
+  27. The input block: text, email, number, and password fields,
+      with the email field disablable
+  28. Validators required, minlength, maxlength: a username with
+      a live character count and rule messages with numbers
+  29. Validators email and pattern: an email shape check and a
+      four digit code
+  30. Form state: value, valid, touched, and the errors object
+      printed live as JSON
+  31. Showing errors well: the [error] slot, a gated error line,
+      and a status line restyled by a [class.name] toggle
+  32. Submitting a form: a submit button gated by the refs, and
+      a Clear button that keeps its own click
+  33. Reactive FormControl: one control in a one control group,
+      its state read live (there is no [formControl] binding
+      yet, and the lesson says so plainly)
+  34. Reactive FormGroup: a profile form whose group value
+      prints live as JSON
+  35. Reactive validators and group state: rules in code, and a
+      group state panel
+  36. Setting values from code: fill and clear buttons using
+      setValue, and a counter fed by valueChanges
+  37. Date pickers: start and end day wheels for a trip
+  38. Time and datetime pickers: a time wheel on five minute
+      steps, and the combined datetime mode
+  39. Bottom sheets: a sort order sheet with a radio group
+      inside
+  40. Dialogs: a delete confirmation with an actions row
+  41. SnackBar messages with actions: a plain save message, and
+      delete with Undo
+  42. Autocomplete inputs: folder suggestions on an ordinary
+      input
+  43. Sliders: brightness on steps of 5, focus minutes on steps
+      of 15
+  44. Choice controls in a form: a preferences form saved under
+      one summary
+  45. A complete form: sign up, with validators, a terms
+      checkbox, a gated submit, and a SnackBar after the save
 - About screen: what the app is, how the tutorial grows, and the
   store plan. Reached from the drawer on Home; its back chevron
   returns to Home, like the lesson screens.

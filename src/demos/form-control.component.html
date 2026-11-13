@@ -1,0 +1,11 @@
+<form [formGroup]="inviteForm" (submit)="apply()">
+  <input label="Invite code" placeholder="At least 4 characters" formControlName="code">
+  <p>Value: {{ inviteForm.get('code').value }}</p>
+  <p>Valid: {{ inviteForm.get('code').valid ? 'yes' : 'no' }}</p>
+  <p>Touched: {{ inviteForm.get('code').touched ? 'yes' : 'no' }}</p>
+  <p>Dirty: {{ inviteForm.get('code').dirty ? 'yes' : 'no' }}</p>
+  <button (click)="useSample()">Use a sample code</button>
+  <button (click)="clear()">Clear</button>
+  <button type="submit" [disabled]="inviteForm.invalid">Apply code</button>
+</form>
+<p *ngIf="applied">Applied code: {{ applied }}</p>

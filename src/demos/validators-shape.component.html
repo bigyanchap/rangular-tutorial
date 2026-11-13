@@ -1,0 +1,6 @@
+<input label="Email" type="email" placeholder="you@example.com" [(ngModel)]="email" #emailField="ngModel" required email>
+<p *ngIf="emailField.errors && emailField.errors.email && emailField.touched">That is not an email shape.</p>
+<p *ngIf="emailField.valid">The email shape is good.</p>
+<input label="Four digit code" placeholder="e.g. 2026" [(ngModel)]="code" #codeField="ngModel" required pattern="[0-9]{4}">
+<p *ngIf="codeField.errors && codeField.errors.pattern && codeField.touched">The code must be exactly four digits. You typed: {{ codeField.errors.pattern.actualValue }}</p>
+<p *ngIf="codeField.valid">The code shape is good.</p>

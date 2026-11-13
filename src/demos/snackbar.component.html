@@ -1,0 +1,5 @@
+<p *ngIf="!noteDeleted">Note: Water the plants on Friday.</p>
+<p *ngIf="noteDeleted">The note was deleted.</p>
+<p *ngIf="restored">Delete undone. The note is back.</p>
+<button (click)="save()">Save</button>
+<button *ngIf="!noteDeleted" (click)="deleteNote()">Delete the note</button>

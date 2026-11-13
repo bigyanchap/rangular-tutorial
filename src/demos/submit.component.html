@@ -1,0 +1,9 @@
+<form (submit)="save()">
+  <input label="Name" placeholder="Your name" [(ngModel)]="name" #nameField="ngModel" required minlength="3">
+  <p *ngIf="nameField.invalid && nameField.touched">Name is required and needs at least 3 characters.</p>
+  <input label="Email" type="email" placeholder="you@example.com" [(ngModel)]="email" #emailField="ngModel" required email>
+  <p *ngIf="emailField.invalid && emailField.touched">Enter a valid email address.</p>
+  <button type="submit" [disabled]="nameField.invalid || emailField.invalid">Save</button>
+  <button (click)="clear()">Clear</button>
+</form>
+<p *ngIf="savedLine">Saved: {{ savedLine }}</p>

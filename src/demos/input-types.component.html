@@ -1,0 +1,9 @@
+<input label="Name" placeholder="Plain text" [(ngModel)]="name">
+<input label="Email" type="email" placeholder="Opens the email keyboard" [(ngModel)]="email" [disabled]="lockEmail">
+<input label="Age" type="number" placeholder="Opens the numeric keyboard" [(ngModel)]="age">
+<input label="PIN" type="password" placeholder="Hidden as you type" [(ngModel)]="pin">
+<checkbox [checked]="lockEmail" (change)="onLock($event)">Disable the email field</checkbox>
+<p>Name: {{ name }}</p>
+<p>Email: {{ email }}</p>
+<p>Age: {{ age }}</p>
+<p>PIN length: {{ pin.length }} characters (the value itself stays hidden)</p>

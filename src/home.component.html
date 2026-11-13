@@ -22,8 +22,12 @@
   <list>
     <row *ngFor="let l of batchLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
   </list>
+  <label>Forms and interaction: lessons 26 to 45</label>
+  <list>
+    <row *ngFor="let l of formsLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+  </list>
   <card>
     <h3>Coming next</h3>
-    <p>The next batch is forms and interaction: template driven forms with ngModel, validators and form state, reactive forms, pickers, sheets and dialogs, SnackBar messages, autocomplete, and sliders. Later batches follow the Angular documentation, topic by topic, each with its Rangular equivalent.</p>
+    <p>The next batch is services, routing, and data: services and dependency injection, routing in depth, HttpClient over fetch, signals and reactive services, and a small real app built lesson by lesson as the capstone. Later batches follow the Angular documentation, topic by topic, each with its Rangular equivalent.</p>
   </card>
 </section>

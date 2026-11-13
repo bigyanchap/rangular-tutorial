@@ -1,0 +1,11 @@
+<p>Sort order: {{ sort }}</p>
+<button (click)="openSheet()">Change sort order</button>
+<sheet [open]="sheetOpen" (close)="closeSheet()">
+  <label>Sort order</label>
+  <radio-group [value]="sort" (change)="onSort($event)">
+    <radio value="newest">Newest first</radio>
+    <radio value="oldest">Oldest first</radio>
+    <radio value="name">By name</radio>
+  </radio-group>
+  <button (click)="closeSheet()">Done</button>
+</sheet>

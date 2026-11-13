@@ -1,0 +1,20 @@
+<form (submit)="save()">
+  <input label="Your name" placeholder="For the summary" [(ngModel)]="name">
+  <switch [checked]="wifi" (change)="onWifi($event)">Wi-Fi</switch>
+  <checkbox [checked]="notifications" (change)="onNotifications($event)">Notifications</checkbox>
+  <checkbox [checked]="sounds" (change)="onSounds($event)">Sounds</checkbox>
+  <label>Theme</label>
+  <radio-group [value]="theme" (change)="onTheme($event)">
+    <radio value="light">Light</radio>
+    <radio value="dark">Dark</radio>
+    <radio value="system">System</radio>
+  </radio-group>
+  <button type="submit" [disabled]="!name">Save preferences</button>
+</form>
+<section *ngIf="submitted">
+  <p>Saved preferences for {{ name }}:</p>
+  <p>Wi-Fi: {{ wifi ? 'on' : 'off' }}</p>
+  <p>Notifications: {{ notifications ? 'on' : 'off' }}</p>
+  <p>Sounds: {{ sounds ? 'on' : 'off' }}</p>
+  <p>Theme: {{ theme }}</p>
+</section>

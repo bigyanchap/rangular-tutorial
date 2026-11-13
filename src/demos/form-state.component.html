@@ -1,0 +1,11 @@
+<form (submit)="attempt()">
+  <input label="Name" placeholder="At least 3 characters" [(ngModel)]="name" #nameField="ngModel" required minlength="3">
+  <p>Value: {{ nameField.value }}</p>
+  <p>Valid: {{ nameField.valid ? 'yes' : 'no' }}</p>
+  <p>Touched: {{ nameField.touched ? 'yes' : 'no' }}</p>
+  <p *ngIf="nameField.errors">Errors: {{ nameField.errors | json }}</p>
+  <p *ngIf="!nameField.errors">Errors: none</p>
+  <p *ngIf="nameField.invalid && nameField.touched">The error line appears once the field is touched.</p>
+  <button type="submit">Try to submit</button>
+</form>
+<p *ngIf="attempted">Submit attempted. The field is touched now, even if you never tapped into it.</p>

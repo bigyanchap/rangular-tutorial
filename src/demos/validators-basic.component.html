@@ -1,0 +1,6 @@
+<input label="Username" placeholder="3 to 8 characters" [(ngModel)]="username" #nameField="ngModel" required minlength="3" maxlength="8">
+<p>Characters: {{ username.length }} (3 to 8 allowed)</p>
+<p *ngIf="nameField.errors && nameField.errors.required && nameField.touched">A username is required.</p>
+<p *ngIf="nameField.errors && nameField.errors.minlength">Too short: {{ nameField.errors.minlength.actualLength }} of {{ nameField.errors.minlength.requiredLength }} characters so far.</p>
+<p *ngIf="nameField.errors && nameField.errors.maxlength">Too long: maxlength is {{ nameField.errors.maxlength.requiredLength }} characters.</p>
+<p *ngIf="nameField.valid">The username is good.</p>

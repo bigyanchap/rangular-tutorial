@@ -4,3 +4,5 @@
 <button (click)="show('calm')">Calm</button>
 <button (click)="show('alert')">Alert</button>
 <button (click)="show('big')">Big</button>
+<p [class.look-highlight]="highlighted">This line carries a class binding. The highlight class turns on and off with the button below.</p>
+<button (click)="toggleHighlight()">Toggle highlight</button>

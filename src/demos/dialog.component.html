@@ -1,0 +1,11 @@
+<p *ngIf="!noteDeleted">Note: Book the yoga hall for Saturday.</p>
+<p *ngIf="noteDeleted">The note was deleted.</p>
+<button *ngIf="!noteDeleted" (click)="openConfirm()">Delete the note</button>
+<button *ngIf="noteDeleted" (click)="restore()">Restore the note</button>
+<dialog [open]="confirmOpen" (close)="closeConfirm()" title="Delete this note?">
+  <p>The note leaves the list. You can restore it afterwards from this screen.</p>
+  <actions>
+    <button (click)="closeConfirm()">Cancel</button>
+    <button (click)="deleteNote()">Delete</button>
+  </actions>
+</dialog>

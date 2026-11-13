@@ -107,6 +107,86 @@
     <label>Live demo: theming with design tokens</label>
     <app-theming-demo></app-theming-demo>
   </card>
+  <card *ngIf="lessonId === 26">
+    <label>Live demo: template driven forms with ngModel</label>
+    <app-ngmodel-demo></app-ngmodel-demo>
+  </card>
+  <card *ngIf="lessonId === 27">
+    <label>Live demo: the input block</label>
+    <app-input-types-demo></app-input-types-demo>
+  </card>
+  <card *ngIf="lessonId === 28">
+    <label>Live demo: required, minlength, maxlength</label>
+    <app-validators-basic-demo></app-validators-basic-demo>
+  </card>
+  <card *ngIf="lessonId === 29">
+    <label>Live demo: email and pattern validators</label>
+    <app-validators-shape-demo></app-validators-shape-demo>
+  </card>
+  <card *ngIf="lessonId === 30">
+    <label>Live demo: form state</label>
+    <app-form-state-demo></app-form-state-demo>
+  </card>
+  <card *ngIf="lessonId === 31">
+    <label>Live demo: showing errors well</label>
+    <app-error-display-demo></app-error-display-demo>
+  </card>
+  <card *ngIf="lessonId === 32">
+    <label>Live demo: submitting a form</label>
+    <app-submit-demo></app-submit-demo>
+  </card>
+  <card *ngIf="lessonId === 33">
+    <label>Live demo: FormControl</label>
+    <app-form-control-demo></app-form-control-demo>
+  </card>
+  <card *ngIf="lessonId === 34">
+    <label>Live demo: FormGroup</label>
+    <app-form-group-demo></app-form-group-demo>
+  </card>
+  <card *ngIf="lessonId === 35">
+    <label>Live demo: reactive validators and group state</label>
+    <app-reactive-state-demo></app-reactive-state-demo>
+  </card>
+  <card *ngIf="lessonId === 36">
+    <label>Live demo: setting values from code</label>
+    <app-set-value-demo></app-set-value-demo>
+  </card>
+  <card *ngIf="lessonId === 37">
+    <label>Live demo: date pickers</label>
+    <app-date-picker-demo></app-date-picker-demo>
+  </card>
+  <card *ngIf="lessonId === 38">
+    <label>Live demo: time and datetime pickers</label>
+    <app-time-picker-demo></app-time-picker-demo>
+  </card>
+  <card *ngIf="lessonId === 39">
+    <label>Live demo: bottom sheets</label>
+    <app-sheet-demo></app-sheet-demo>
+  </card>
+  <card *ngIf="lessonId === 40">
+    <label>Live demo: dialogs</label>
+    <app-dialog-demo></app-dialog-demo>
+  </card>
+  <card *ngIf="lessonId === 41">
+    <label>Live demo: SnackBar messages with actions</label>
+    <app-snackbar-demo></app-snackbar-demo>
+  </card>
+  <card *ngIf="lessonId === 42">
+    <label>Live demo: autocomplete inputs</label>
+    <app-autocomplete-demo></app-autocomplete-demo>
+  </card>
+  <card *ngIf="lessonId === 43">
+    <label>Live demo: sliders</label>
+    <app-slider-demo></app-slider-demo>
+  </card>
+  <card *ngIf="lessonId === 44">
+    <label>Live demo: choice controls in a form</label>
+    <app-choice-form-demo></app-choice-form-demo>
+  </card>
+  <card *ngIf="lessonId === 45">
+    <label>Live demo: a complete form, sign up</label>
+    <app-signup-demo></app-signup-demo>
+  </card>
   <section *ngIf="lesson">
     <label>Best practice</label>
     <p>{{ lesson.tip }}</p>

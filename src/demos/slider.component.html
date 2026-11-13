@@ -1,0 +1,6 @@
+<label>Brightness</label>
+<slider min="0" max="100" step="5" [value]="brightness" (change)="onBrightness($event)"></slider>
+<p>Brightness: {{ brightness }} (always a multiple of 5)</p>
+<label>Focus minutes</label>
+<slider min="0" max="60" step="15" [value]="minutes" (change)="onMinutes($event)"></slider>
+<p>Minutes: {{ minutes }} (always a multiple of 15)</p>

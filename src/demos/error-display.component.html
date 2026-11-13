@@ -1,0 +1,4 @@
+<input label="Email" type="email" placeholder="you@example.com" [(ngModel)]="email" #emailField="ngModel" required email [error]="emailField.invalid && emailField.touched ? 'Enter a valid email address.' : ''">
+<input label="Password" type="password" placeholder="At least 6 characters" [(ngModel)]="password" #passwordField="ngModel" required minlength="6">
+<p *ngIf="passwordField.invalid && passwordField.touched">Password is required and needs at least 6 characters.</p>
+<p [class.ready]="emailField.valid && passwordField.valid">Watch this line: it turns green and bold when both fields are valid.</p>

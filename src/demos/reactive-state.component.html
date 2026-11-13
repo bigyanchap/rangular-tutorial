@@ -1,0 +1,12 @@
+<form [formGroup]="profileForm" (submit)="save()">
+  <input label="Name" placeholder="Your name" formControlName="name">
+  <p *ngIf="profileForm.get('name').invalid && profileForm.get('name').touched">Name is required.</p>
+  <input label="Email" placeholder="you@example.com" formControlName="email">
+  <p *ngIf="profileForm.get('email').invalid && profileForm.get('email').touched">Enter a valid email address.</p>
+  <p>Group valid: {{ profileForm.valid ? 'yes' : 'no' }}</p>
+  <p>Group touched: {{ profileForm.touched ? 'yes' : 'no' }}</p>
+  <p>Group dirty: {{ profileForm.dirty ? 'yes' : 'no' }}</p>
+  <p *ngIf="profileForm.get('email').errors">Email errors: {{ profileForm.get('email').errors | json }}</p>
+  <button type="submit" [disabled]="profileForm.invalid">Save</button>
+</form>
+<p *ngIf="saved">Saved. The submit marked every control touched before the handler ran.</p>

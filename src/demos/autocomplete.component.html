@@ -1,0 +1,4 @@
+<input label="Move to folder" placeholder="Type a folder name" [(ngModel)]="folder" [options]="folders" (optionSelected)="onPick($event)">
+<p>Field value: {{ folder }}</p>
+<p *ngIf="picked">Last pick from the list: {{ picked }}</p>
+<p>Try typing in, st, or tr, then tap a suggestion.</p>

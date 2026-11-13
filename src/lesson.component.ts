@@ -25,6 +25,26 @@ import { TabsDemoComponent } from './demos/tabs.component';
 import { TablesDemoComponent } from './demos/tables.component';
 import { ChipsDemoComponent } from './demos/chips.component';
 import { ThemingDemoComponent } from './demos/theming.component';
+import { NgmodelDemoComponent } from './demos/ngmodel.component';
+import { InputTypesDemoComponent } from './demos/input-types.component';
+import { ValidatorsBasicDemoComponent } from './demos/validators-basic.component';
+import { ValidatorsShapeDemoComponent } from './demos/validators-shape.component';
+import { FormStateDemoComponent } from './demos/form-state.component';
+import { ErrorDisplayDemoComponent } from './demos/error-display.component';
+import { SubmitDemoComponent } from './demos/submit.component';
+import { FormControlDemoComponent } from './demos/form-control.component';
+import { FormGroupDemoComponent } from './demos/form-group.component';
+import { ReactiveStateDemoComponent } from './demos/reactive-state.component';
+import { SetValueDemoComponent } from './demos/set-value.component';
+import { DatePickerDemoComponent } from './demos/date-picker.component';
+import { TimePickerDemoComponent } from './demos/time-picker.component';
+import { SheetDemoComponent } from './demos/sheet.component';
+import { DialogDemoComponent } from './demos/dialog.component';
+import { SnackbarDemoComponent } from './demos/snackbar.component';
+import { AutocompleteDemoComponent } from './demos/autocomplete.component';
+import { SliderDemoComponent } from './demos/slider.component';
+import { ChoiceFormDemoComponent } from './demos/choice-form.component';
+import { SignupDemoComponent } from './demos/signup.component';
 
 /**
  * One lesson screen. The lesson data comes from LessonService by

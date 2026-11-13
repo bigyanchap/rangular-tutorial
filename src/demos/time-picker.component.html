@@ -1,0 +1,4 @@
+<datetime-picker label="Reminder time" mode="time" minuteInterval="5" [value]="at" (change)="onAt($event)"></datetime-picker>
+<p>Time value (ISO): {{ at }}</p>
+<datetime-picker label="Date and time" [value]="when" (change)="onWhen($event)"></datetime-picker>
+<p>Datetime value (ISO): {{ when }}</p>

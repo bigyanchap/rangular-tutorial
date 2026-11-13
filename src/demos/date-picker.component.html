@@ -1,0 +1,4 @@
+<datetime-picker label="Start day" mode="date" [value]="startDay" (change)="onStart($event)"></datetime-picker>
+<datetime-picker label="End day" mode="date" [value]="endDay" (change)="onEnd($event)"></datetime-picker>
+<p>Start day (ISO): {{ startDay }}</p>
+<p>End day (ISO): {{ endDay }}</p>

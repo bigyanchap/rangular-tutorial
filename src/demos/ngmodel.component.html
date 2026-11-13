@@ -1,0 +1,6 @@
+<input label="Your name" placeholder="e.g. Maya" [(ngModel)]="name">
+<input label="Your city" placeholder="e.g. Pokhara" [(ngModel)]="city">
+<p>Name field: {{ name }}</p>
+<p>City field: {{ city }}</p>
+<button (click)="greet()" [disabled]="!name || !city">Say hello</button>
+<p *ngIf="greeting">{{ greeting }}</p>
