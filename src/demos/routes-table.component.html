@@ -1,0 +1,7 @@
+<list>
+  <row *ngFor="let r of table" [title]="r.path" [subtitle]="r.screen"></row>
+</list>
+<p>This screen is the LessonComponent row at work: the router matched lesson/:id and the outlet in the app shell rendered this lesson in its place.</p>
+<p>The two buttons are real links, and they leave this lesson:</p>
+<button routerLink="/about">Open About through a link</button>
+<button routerLink="/home">Open Home through a link</button>

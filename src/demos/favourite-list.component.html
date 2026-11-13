@@ -1,0 +1,5 @@
+<label>Your saved quotes, read from the same service</label>
+<p *ngIf="favourites.saved.length === 0">None saved yet. Save one above and it lands here.</p>
+<p *ngFor="let q of favourites.saved">{{ q }}</p>
+<p *ngIf="favourites.saved.length > 0">{{ favourites.saved.length }} saved. Saving the same quote twice keeps one copy.</p>
+<button (click)="clear()" [disabled]="favourites.saved.length === 0">Clear the saved quotes</button>

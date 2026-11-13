@@ -1,0 +1,4 @@
+<p>{{ report.report() }}</p>
+<button (click)="bump()">Bump, through the report service</button>
+<p>Bumps relayed by the report service: {{ report.relayed }}</p>
+<p>This component never injects the counter. It only knows the report service.</p>

@@ -95,18 +95,53 @@ as all controls valid; and there is no reset or patchValue, so
 lesson 36 fills and clears with setValue per control.
 Autocomplete (lesson 42) takes string options only.
 
-## Batch 3: lessons 46 to 65 (planned)
+## Batch 3: lessons 46 to 65 (written)
 
 Services, routing, and data, from the Angular documentation on
 dependency injection, routing, and HTTP.
 
-- Services and dependency injection
-- providedIn root and the container
-- Routing in depth: routes, routerLink, parameters
-- ActivatedRoute and programmatic navigation
-- HttpClient over fetch
-- Signals and reactive services
-- Building a small real app, lesson by lesson, as the capstone
+1. Services: shared work in one place
+2. Constructor injection
+3. providedIn root: one instance for the whole app
+4. The container: dependency order, services using services
+5. Sharing state between components
+6. Updating service state: assign, do not mutate
+7. A service as the store
+8. Signals: the Angular idea, the Rangular way
+9. Routes and the outlet
+10. routerLink: string and array forms
+11. Route parameters
+12. ActivatedRoute: snapshot and paramMap
+13. Programmatic navigation with the Router service
+14. Redirects and the wildcard route
+15. What routing does not do yet
+16. HttpClient: a real GET over fetch
+17. Loading, error, and data: request states
+18. Data services: HTTP behind a service
+19. Capstone, part 1: the practice log service
+20. Capstone, part 2: the practice log, whole
+
+All twenty lessons are written, each with a live demo component
+under `src/demos/`. The demos for the routing lessons navigate
+inside this app's real routes, and the HTTP demos make real
+requests to a public practice API (JSONPlaceholder). The
+framework limits are taught honestly in their lessons: Angular
+signals are not compiled yet, so lesson 53 teaches the field
+and derived method pattern Rangular offers today; DI has no
+provider arrays, useClass or useValue swaps, or injection
+tokens, and unknown tokens and dependency cycles are build
+errors (DI_UNKNOWN_TOKEN, DI_CYCLE); the reactivity contract
+is assignment, so lesson 51 shows a mutation that leaves the
+screen stale next to an assignment that updates it; routing
+has no guards, resolvers, lazy loading, child routes, or
+routerLinkActive, and an entry using one is a
+GEN_ROUTE_UNSUPPORTED error, so lesson 60 teaches the check
+before you navigate pattern; paramMap emits the plain params
+object (read as params.id, not a ParamMap with .get), and a
+parameter only change remounts the component; HttpClient is
+an Observable-lite with subscribe only, and in the browser
+preview it is a stub that never answers, which lessons 61 to
+63 state plainly.
 
 ## After the batches
 

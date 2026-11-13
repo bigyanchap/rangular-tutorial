@@ -1,0 +1,4 @@
+<p>The tally stands at {{ tally.count }}.</p>
+<button (click)="tallyAndRecord()">Add one and record it</button>
+<p *ngIf="trail.lines.length === 0">The trail is empty. One tap writes into both services.</p>
+<p *ngFor="let line of trail.lines">{{ line }}</p>

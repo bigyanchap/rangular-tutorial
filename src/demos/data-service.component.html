@@ -1,0 +1,11 @@
+<spinner *ngIf="user.loading"></spinner>
+<p *ngIf="user.loading">Loading user {{ user.which }}...</p>
+<p *ngIf="user.failed">{{ user.failed }}</p>
+<section *ngIf="user.name">
+  <p>Name: {{ user.name }}</p>
+  <p>Email: {{ user.email }}</p>
+  <p>City: {{ user.city }}</p>
+</section>
+<button (click)="prev()" [disabled]="user.which <= 1 || user.loading">Previous user</button>
+<button (click)="next()" [disabled]="user.which >= 3 || user.loading">Next user</button>
+<p>User {{ user.which }} of 3, fetched and held by the UserService. This component only reads.</p>

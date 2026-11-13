@@ -26,8 +26,12 @@
   <list>
     <row *ngFor="let l of formsLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
   </list>
+  <label>Services, routing, and data: lessons 46 to 65</label>
+  <list>
+    <row *ngFor="let l of dataLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+  </list>
   <card>
     <h3>Coming next</h3>
-    <p>The next batch is services, routing, and data: services and dependency injection, routing in depth, HttpClient over fetch, signals and reactive services, and a small real app built lesson by lesson as the capstone. Later batches follow the Angular documentation, topic by topic, each with its Rangular equivalent.</p>
+    <p>The lesson batches are complete: the curriculum now covers the whole framework, from the first component to a small real app. Next come the app comforts: search across lessons, bookmarks with resume where you left off, and a try it editor for the most common lessons, then the store release.</p>
   </card>
 </section>

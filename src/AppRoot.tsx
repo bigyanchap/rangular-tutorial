@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { RgAccordion, RgActions, RgAppbar, RgButton, RgCard, RgCheckbox, RgChip, RgChips, RgCode, RgColumn, RgDateTimePicker, RgDialog, RgDrawer, RgIcon, RgIconButton, RgInput, RgList, RgOption, RgOutlet, RgPanel, RgProgressBar, RgRadio, RgRadioGroup, RgRow, RgScreen, RgSection, RgSheet, RgSlider, RgSnackbar, RgSpinner, RgSwitch, RgSwitcher, RgTab, RgTable, RgTabs, RgText } from '@rangular/ui';
-import { ActivatedRoute, Container, FormControl, FormGroup, ReactiveService, RgNavigator, Router, SnackBar, Validators, pipe, validateValue } from '@rangular/runtime';
+import { ActivatedRoute, Container, FormControl, FormGroup, HttpClient, ReactiveService, RgNavigator, Router, SnackBar, Validators, pipe, validateValue } from '@rangular/runtime';
 
 export class LessonService extends ReactiveService {
   lessons = [
@@ -411,6 +411,186 @@ export class LessonService extends ReactiveService {
       code: '<button type="submit" [disabled]="nameField.invalid || !terms">Create account</button>',
       tip: 'Build every form in this order: fields, rules, error lines gated on touched, a gated submit, and feedback after the save. When a form feels broken, it is almost always one of the five done out of order.',
     },
+    {
+      id: 46,
+      title: 'Services: shared work in one place',
+      subtitle: 'One class holds the data and the logic, every screen shares it',
+      minutes: '4 min',
+      intro: 'Until now, every demo kept its data inside its own component. Real apps share: the same quotes, the same user, the same list, on many screens. A service is a class that holds shared data and the methods that work on it. It has no template and no screen. A component that needs it declares it in the constructor, and Rangular hands over the instance. That handover is dependency injection, and the next lessons take it apart. The demo below holds no quote data at all: the quotes live in a QuoteService, and the component only asks the service for the current quote and tells it to move on.',
+      code: 'constructor(private quotes: QuoteService) {}',
+      tip: 'Put data in a service when more than one screen needs it, or when the work is not about one screen: fetching, storing, computing. Keep screen only state, like whether a sheet is open, in the component.',
+    },
+    {
+      id: 47,
+      title: 'Constructor injection',
+      subtitle: 'Declare what you need; the framework hands it over',
+      minutes: '4 min',
+      intro: 'A component never builds its own services. Writing new QuoteService() inside a component would give that component a private copy, cut off from everyone else. Instead the component declares its needs as constructor parameters with private in front: constructor(private tally: TallyService). Rangular reads those declarations, finds or builds each service, and hands it in when the component is created. That is the whole mechanism. Two honest details: the parameter must be a parameter property, private or public in front of the name, and the constructor body itself is not translated, so constructors stay empty: wiring only, no work. The demo injects two services at once, and one tap uses both: the tally counts, the trail records.',
+      code: 'constructor(private tally: TallyService, private trail: TrailService) {}',
+      tip: 'If a constructor grows past three or four services, the component is probably doing too much. Split the screen, or move the shared work into one service that uses the others, which is lesson 49.',
+    },
+    {
+      id: 48,
+      title: 'providedIn root: one instance for the whole app',
+      subtitle: 'The singleton: every injector gets the same service',
+      minutes: '5 min',
+      intro: "The decorator @Injectable({ providedIn: 'root' }) makes a promise: one instance of this service exists for the whole app, and every component that injects it gets that same instance. Not a copy per screen: the same object, with the same fields. The demo proves it. The writer and the reader below are separate components, and the parent passes nothing between them. The writer adds a line to the NotebookService; the reader shows it at once, because both hold the one notebook. This is how screens that have never met share state.",
+      code: "@Injectable({ providedIn: 'root' })",
+      tip: 'Root services live as long as the app runs. That is their power and their risk: state put there survives every navigation, so clear it deliberately when its job is done, the way a log out clears the current user.',
+    },
+    {
+      id: 49,
+      title: 'The container: how instances are made',
+      subtitle: 'Dependency order, and services that use services',
+      minutes: '5 min',
+      intro: 'Behind injection sits a container: the part of the generated app that registers every root service, builds each one once, and builds dependencies before the services that need them. Services can inject services, the same way components do. The demo has three layers: a CounterService at the bottom, a ReportService that injects it, and a component that injects only the report service. Ask the component to bump and the counter moves two layers down; the component never names it. The honest limits: there are no provider arrays, no useClass or useValue swaps, and no injection tokens for interfaces. A constructor asking for something that is not a root service or HttpClient fails the build with DI_UNKNOWN_TOKEN, and a circle of services injecting each other fails with DI_CYCLE. Loud errors, never silent copies.',
+      code: 'constructor(private counter: CounterService) {}',
+      tip: 'Layer services by job: one talks to the network or storage, one holds state, one shapes what screens show. A screen should inject the layer it talks to, not reach through it to the layers below.',
+    },
+    {
+      id: 50,
+      title: 'Sharing state between components',
+      subtitle: 'Siblings talk through a service, not through each other',
+      minutes: '5 min',
+      intro: 'Inputs and outputs connect a parent and its child. Two components side by side, with no parent between them, have no such wire. The pattern that connects them is a shared service: one writes, the other reads, and the singleton keeps them in step. The demo keeps a profile in a ProfileService. The editor saves a name and a practice into the service; the greeter below it, a separate component that receives no inputs at all, greets by that name at once. When you find yourself passing a value down three levels of children just so a distant cousin can read it, that value belongs in a service.',
+      code: 'this.profile.setName(this.nameDraft);',
+      tip: 'Share through a service when the readers and writers are not parent and child. Keep parent to child data on inputs: it is visible in the template, and visible wiring beats invisible wiring when both can do the job.',
+    },
+    {
+      id: 51,
+      title: 'Updating service state: assign, do not mutate',
+      subtitle: 'The reactivity contract: a new value tells the screens',
+      minutes: '5 min',
+      intro: 'A root service is reactive, under one clear contract: when a service method assigns a field, every screen that injects the service renders again. When a method only changes something inside the old value, like pushing into the same array, nothing is assigned, nobody is told, and the screens keep showing the old picture. The data did change; the screens were never notified. The demo keeps a shelf in a service. Add a book the quiet way, by pushing, and the list does not move. Then tap the local change button: the render shows the book was there all along. Add the proper way, by assigning a new array, and the list updates at once.',
+      code: "this.items = [...this.items, 'Book'];",
+      tip: 'In services, change collections by assignment: a spread to add, filter to remove, map to update. The rule you learned for component lists in lesson 6 matters twice here, because a missed assignment in a service leaves every screen stale at once.',
+    },
+    {
+      id: 52,
+      title: 'A service as the store',
+      subtitle: 'One source of truth that screens only read and request',
+      minutes: '5 min',
+      intro: 'Put lessons 46 to 51 together and a shape appears: the service holds the collection, its methods are the only doors that change it, and components keep no copies of their own. That shape is a store, in the small, honest sense. The demo below has a FavouritesService holding the saved quotes. The browser component asks it to save; the list component reads what it holds; neither keeps a private list that could drift away from the other. When a screen shows wrong data in this shape, there is exactly one place to look: the service.',
+      code: 'this.saved = this.saved.includes(quote) ? this.saved : [...this.saved, quote];',
+      tip: 'Let service methods be the only doors into shared state. A component that reaches in and edits a service field directly has made a second, invisible door, and the next reader pays for it.',
+    },
+    {
+      id: 53,
+      title: 'Signals: the Angular idea, the Rangular way',
+      subtitle: 'Reactive values here are fields; derived values are read, not stored',
+      minutes: '5 min',
+      intro: 'Newer Angular has signals: a value wrapped in signal(), read by calling it, with computed() for values derived from it and effect() for side effects. Stated plainly: Rangular does not compile Angular signals today. A signal() field in a component or a service is not translated, and computed and effect do not exist here. What Rangular gives you instead is the simpler contract you have used all along: a field is a reactive value, assignment updates every reader, and a derived value is computed when it is read, by a method, never stored as a second copy that can disagree with the first. The demo keeps focus minutes in a service. The stepper changes the value; the display, a separate component, reads it and derives the hours text with a method, fresh on every render: the job computed() does in Angular.',
+      code: 'hoursText() { const m = this.focus.minutes; return (m - (m % 60)) / 60 + \'h \' + (m % 60) + \'m\'; }',
+      tip: 'Never store a value you can derive. Two copies of one fact will disagree one day; a method that computes from the single source cannot. When Rangular gains real signals, this pattern maps straight onto computed().',
+    },
+    {
+      id: 54,
+      title: 'Routes and the outlet',
+      subtitle: 'One table of paths, one outlet in the shell',
+      minutes: '4 min',
+      intro: 'A routed app is a shell plus a table. The shell, here the app component, holds a single router-outlet. The table, in app.routes.ts, pairs each path with the component that answers it. The screen you are reading is not in the shell at all: the router matched the path lesson/:id, and the outlet rendered this lesson screen in its place. The demo lists this app\'s own route table, the real one from its routes file, and the two buttons under it are ordinary links: the same navigation you have used since the splash screen, now with its wiring visible.',
+      code: '<router-outlet></router-outlet>',
+      tip: 'Keep the route table small, flat, and in one file. A reader should be able to draw the whole app from app.routes.ts alone: every screen, one line each.',
+    },
+    {
+      id: 55,
+      title: 'routerLink: links that navigate',
+      subtitle: 'A string for fixed paths, an array when a value travels',
+      minutes: '4 min',
+      intro: 'routerLink turns a tappable block, a button, a row, a fab, into a navigation. The string form names a fixed path: routerLink="/about". The array form builds a path from pieces: [routerLink] joins its commands with slashes and turns numbers into text, which is how a list sends each row to its own parameter. Both forms end in the same place: a press that writes the new path into the navigator. The demo rows are array links to real lessons, and its button is a string link to About. Tapping one leaves this lesson. That is not a flaw in the demo; that is the demo.',
+      code: "[routerLink]=\"['/lesson', 46]\"",
+      tip: 'Use the string form when the path never changes and the array form when any piece comes from data. Never build a link by gluing strings together in the template: the array is the gluing, done safely.',
+    },
+    {
+      id: 56,
+      title: 'Route parameters',
+      subtitle: 'The :id segment: one path, many screens',
+      minutes: '4 min',
+      intro: 'A segment that starts with a colon is a parameter: lesson/:id matches lesson/1, lesson/26, and lesson/65 with a single table entry. The matched text is captured as a string, always a string, and handed to the component, which is the next lesson\'s subject. One entry, one component, endlessly many addresses: that is what lets a list of sixty five lessons need exactly one route. The demo rows carry different parameters to real lessons, and its last button reopens this very lesson, the same path with the same parameter, so you can watch the screen rebuild around the number 56.',
+      code: "{ path: 'lesson/:id', component: LessonComponent }",
+      tip: 'Name parameters for what they are: :id, :slug, :date. And remember they arrive as strings: turn an id into a number in the class, the way this app\'s lesson service does with Number(id), before you compare or compute with it.',
+    },
+    {
+      id: 57,
+      title: 'ActivatedRoute: reading the parameter in code',
+      subtitle: 'Snapshot for the value now, paramMap for the stream',
+      minutes: '5 min',
+      intro: 'A routed component reads its parameters from an injected ActivatedRoute. route.snapshot.params is a plain object of strings, read once, usually in ngOnInit. route.paramMap is a small observable: subscribe and it emits the params now, and again on each navigation while you stay subscribed. Two honest differences from Angular: the emission here is the plain params object, read as params.id, not a ParamMap with a .get() method; and where Angular reuses the component when only the parameter changes, Rangular remounts it, so ngOnInit runs again with the new snapshot, and snapshot code behaves identically in both. The demo reads this lesson\'s own route both ways: the id it shows is the 57 in the path you arrived by, read from the route, not from the lesson data.',
+      code: 'this.snapId = this.route.snapshot.params.id;',
+      tip: 'Read the snapshot when the screen is built once per address, which is most screens. Reach for paramMap only when one long lived screen must react to parameter changes without rebuilding, and unsubscribe in ngOnDestroy what you subscribed in ngOnInit.',
+    },
+    {
+      id: 58,
+      title: 'Programmatic navigation: the Router service',
+      subtitle: 'Navigate from code, when a tap is not a link',
+      minutes: '4 min',
+      intro: 'Links cover taps on blocks. Code covers the rest: after a save, after a sign in, whenever a value decides the destination. Inject Router and call navigate with a commands array, the array form of a link, or navigateByUrl with a whole path string. Both write to the same navigator the links use, and both resolve from the root of the route table: relative navigation, from this route to a sibling, is not supported yet. The demo asks for a lesson number and navigates to it from a method: type a number from 1 to 65 and tap Go. Ask for a number with no lesson and the lesson screen answers plainly that the lesson could not be found, which is honest behaviour for a bad address.',
+      code: "this.router.navigate(['/lesson', this.target]);",
+      tip: 'Navigate from code at the end of an action, not instead of a link. If a plain tap on a block goes somewhere fixed, that is a routerLink; the Router service earns its place when logic chooses the moment or the destination.',
+    },
+    {
+      id: 59,
+      title: 'Redirects and the wildcard route',
+      subtitle: 'The empty path sends you on; ** catches the rest',
+      minutes: '4 min',
+      intro: "Two entries keep an app's edges tidy. A redirect entry, { path: '', redirectTo: 'splash', pathMatch: 'full' }, answers the empty path by sending the visitor on to a real screen: open this app at its root and you land on the splash, never on a blank. The wildcard, { path: '**', component: NotFoundComponent }, matches anything no other entry claimed, so a mistyped or invented path lands on a designed screen with a way home, not on an error. Matching tries entries in order, so the wildcard belongs last. Both demo buttons leave this lesson on purpose: the first opens a path that does not exist, and the second opens the root.",
+      code: "{ path: '**', component: NotFoundComponent }",
+      tip: 'Every routed app needs both edges covered from its first day: a redirect for the empty path, and a wildcard with a friendly screen and a working way back. An app that skips them ships its first bug before its first feature.',
+    },
+    {
+      id: 60,
+      title: 'What routing does not do yet',
+      subtitle: 'No guards, resolvers, or lazy routes; the check before you navigate',
+      minutes: '5 min',
+      intro: 'Stated plainly, so a route table never promises what it cannot do: Rangular routes have no guards, no resolvers, no lazy loading, no child routes, and no routerLinkActive styling. A route entry that uses one fails the build with GEN_ROUTE_UNSUPPORTED, naming the feature, rather than compiling into a half working screen. The everyday need behind a guard, keeping a visitor out of a screen until a condition holds, has a working pattern today: check first, then navigate, with the check living in the tap handler instead of the route table. The demo is a diary gate, built from the opposite pair of lesson 7. With the switch off, the button only warns. With it on, the same button navigates, here to the About screen, which plays the diary so you can watch the navigation happen.',
+      code: '<button *ngIf="signedIn" (click)="openDiary()">Open my diary</button>',
+      tip: 'Put the check where the action starts, and make the refusal kind and clear: a message that says what is missing, not a dead button. When guards arrive in the framework, these checks move into the route table almost word for word.',
+    },
+    {
+      id: 61,
+      title: 'HttpClient: asking the network',
+      subtitle: 'A real GET over fetch, answered as JSON',
+      minutes: '5 min',
+      intro: "HttpClient is a built in service, injected like any other, that performs real requests with fetch and hands back parsed JSON. get(url) returns a small observable: subscribe with a block bodied arrow that assigns your fields, and add a second arrow for the error, because networks fail. There are no operators, no pipe, no retry: the subscribe is the whole tool, and lesson 62 builds the states around it. The demo makes a real call to JSONPlaceholder, a public practice API kept for exactly this purpose, and shows the user it returns: sample data, fetched by a genuine request. Two honest notes: the call needs the phone online, and in this app's browser preview HttpClient is a stub that never answers, so the demo waits at Loading there. On the phone, nothing is faked.",
+      code: 'this.http.get(url).subscribe((data) => { this.name = data.name; });',
+      tip: 'Keep the URL in one place, a constant or a service, never scattered through components. And always write the error arrow: a request without an error path is a screen that hangs silently one day.',
+    },
+    {
+      id: 62,
+      title: 'Loading, error, and data: honest request states',
+      subtitle: 'Every request shows where it stands',
+      minutes: '5 min',
+      intro: 'A request has three honest states, and a screen should show all of them: loading while it travels, error when it fails, and the data when it lands. The demo loads the user list when the screen opens: a spinner and a line while loading, the names and emails as rows on success, and on failure an error line with a Retry button that simply calls the same load method again. The Reload button stays disabled while a request is in flight, so two taps cannot stack two requests. Offline, this demo becomes an error state demonstration, which is also honest: that is exactly what your users will see.',
+      code: '<spinner *ngIf="loading"></spinner>',
+      tip: 'Design the three states together, every time: what shows while waiting, what shows on failure and how to retry, and what shows with the data. A screen designed only for success is a screen designed for the best day, not the real one.',
+    },
+    {
+      id: 63,
+      title: 'Data services: HTTP behind a service',
+      subtitle: 'Components render; the service fetches and holds',
+      minutes: '5 min',
+      intro: 'Two lessons of raw HttpClient in components is enough to see the smell: URLs in screens, loading flags copied per component, the same error line written five times. The Angular pattern moves the request into a service. The service owns the URL, the loading and error state, and the loaded fields; the component injects it, calls load, and renders the fields the service holds in its template, the same reading you have done since lesson 46. The demo below pages through three practice users with Previous and Next: every tap asks the UserService for another id, and the screen only reads. If the API changes tomorrow, one file changes.',
+      code: 'load(id: number) { this.http.get(url + id).subscribe((data) => { this.name = data.name; }); }',
+      tip: 'Keep one data service per kind of data: users, lessons, orders. Components should be able to say what they show without knowing where it came from; the day the API moves, you will be glad they cannot.',
+    },
+    {
+      id: 64,
+      title: 'Capstone, part 1: the practice log service',
+      subtitle: 'Build a small real app: first the data layer',
+      minutes: '5 min',
+      intro: 'The last two lessons build one small real app, a practice log, from the pieces of this batch. Part 1 is the data layer and nothing else: a PracticeLogService holding the entries and a running total, with add and remove as the only doors, every change by assignment so every screen stays live. Under it sit two components: a quick add with three honest buttons, and the list that reads the service, total and all. No form yet, no polish. A real app starts as a service that tells the truth, and screens that read it.',
+      code: 'this.entries = [...this.entries, { name: name, minutes: minutes }];',
+      tip: 'Build the data layer first and make it boring: fields, add, remove, a total that is always right. Screens are easy to change; a service every screen trusts is the app.',
+    },
+    {
+      id: 65,
+      title: 'Capstone, part 2: the practice log, whole',
+      subtitle: 'Form, list, totals, and a toast: the batch in one screen',
+      minutes: '6 min',
+      intro: 'Part 2 finishes the practice log on the same service. A name from an input; the minutes from choice buttons, because an input hands you text and the total needs a real number; an Add button that stays disabled until both are set; the entries with a Remove on each; the running total; an empty state that invites the first entry; and a toast when a practice is logged. One honest detail proves the whole batch: if you added entries in lesson 64, they are still here. The service outlives the screen, because it was never the screen\'s to keep. Nothing in this demo is new, and that is the point of a capstone: the app is the lessons, assembled.',
+      code: 'this.log.add(this.name, this.minutes);',
+      tip: 'When you build your own app, assemble it in this order: service, screens that read it, form, feedback. And when something shows wrong, ask first which layer lied: the service, the binding, or the state change that never assigned.',
+    },
   ];
   getById(id: string) {
     const found = this.lessons.find((l: any) => l.id === Number(id));
@@ -420,6 +600,169 @@ export class LessonService extends ReactiveService {
 
 export class LifecycleLogService extends ReactiveService {
   entries: string[] = [];
+}
+
+export class QuoteService extends ReactiveService {
+  quotes = [
+    'Practice is the mother of skill.',
+    'What you repeat every day, you become.',
+    'Small steps, taken daily, cross the mountain.',
+  ];
+  position = 0;
+  currentQuote() {
+    return this.quotes[this.position];
+  }
+  next() {
+    this.position = (this.position + 1) % this.quotes.length;
+    this.__notify();
+  }
+}
+
+export class TallyService extends ReactiveService {
+  count = 0;
+  add() {
+    this.count = this.count + 1;
+    this.__notify();
+  }
+}
+
+export class TrailService extends ReactiveService {
+  lines: string[] = [];
+  record(line: string) {
+    this.lines = [...this.lines, line];
+    this.__notify();
+  }
+}
+
+export class NotebookService extends ReactiveService {
+  lines: string[] = [];
+  add(line: string) {
+    this.lines = [...this.lines, line];
+    this.__notify();
+  }
+}
+
+export class ReportService extends ReactiveService {
+  relayed = 0;
+  constructor(private counter: CounterService) {
+    super();
+  }
+  bump() {
+    this.counter.bump();
+    this.relayed = this.relayed + 1;
+    this.__notify();
+  }
+  report() {
+    return 'The counter stands at ' + this.counter.value;
+  }
+}
+
+export class CounterService extends ReactiveService {
+  value = 0;
+  bump() {
+    this.value = this.value + 1;
+    this.__notify();
+  }
+}
+
+export class ProfileService extends ReactiveService {
+  name = 'friend';
+  practice = 'yoga';
+  setName(name: string) {
+    this.name = name;
+    this.__notify();
+  }
+  setPractice(practice: string) {
+    this.practice = practice;
+    this.__notify();
+  }
+}
+
+export class ShelfService extends ReactiveService {
+  items = ['Yoga mat'];
+  addQuietly(name: string) {
+    this.items.push(name);
+  }
+  addProperly(name: string) {
+    this.items = [...this.items, name];
+    this.__notify();
+  }
+}
+
+export class FavouritesService extends ReactiveService {
+  saved: string[] = [];
+  save(quote: string) {
+    this.saved = (this.saved.includes(quote) ? this.saved : [...this.saved, quote]);
+    this.__notify();
+  }
+  clear() {
+    this.saved = [];
+    this.__notify();
+  }
+}
+
+export class MinutesService extends ReactiveService {
+  minutes = 0;
+  add(amount: number) {
+    this.minutes = this.minutes + amount;
+    this.__notify();
+  }
+  reset() {
+    this.minutes = 0;
+    this.__notify();
+  }
+}
+
+export class UserService extends ReactiveService {
+  which = 1;
+  name = '';
+  email = '';
+  city = '';
+  loading = false;
+  failed = '';
+  constructor(private http: HttpClient) {
+    super();
+  }
+  load(id: number) {
+    this.which = id;
+    this.__notify();
+    this.loading = true;
+    this.__notify();
+    this.failed = '';
+    this.__notify();
+    this.http.get('https://jsonplaceholder.typicode.com/users/' + id).subscribe((data) => {
+  this.name = data.name;
+  this.__notify();
+  this.email = data.email;
+  this.__notify();
+  this.city = data.address.city;
+  this.__notify();
+  this.loading = false;
+  this.__notify();
+}, (err) => {
+  this.failed = 'The request failed. Check the connection and try again.';
+  this.__notify();
+  this.loading = false;
+  this.__notify();
+});
+  }
+}
+
+export class PracticeLogService extends ReactiveService {
+  entries: any[] = [];
+  total = 0;
+  add(name: string, minutes: number) {
+    this.entries = [...this.entries, { name: name, minutes: minutes }];
+    this.__notify();
+    this.total = this.total + minutes;
+    this.__notify();
+  }
+  remove(entry: any) {
+    this.entries = this.entries.filter((x) => x !== entry);
+    this.__notify();
+    this.total = this.total - entry.minutes;
+    this.__notify();
+  }
 }
 
 export class DurationPipe {
@@ -434,6 +777,19 @@ const __pipeDurationPipe = new DurationPipe();
 const __container = new Container();
 __container.register(LessonService, new LessonService());
 __container.register(LifecycleLogService, new LifecycleLogService());
+__container.register(QuoteService, new QuoteService());
+__container.register(TallyService, new TallyService());
+__container.register(TrailService, new TrailService());
+__container.register(NotebookService, new NotebookService());
+__container.register(CounterService, new CounterService());
+__container.register(ReportService, new ReportService(__container.get<CounterService>(CounterService)));
+__container.register(ProfileService, new ProfileService());
+__container.register(ShelfService, new ShelfService());
+__container.register(FavouritesService, new FavouritesService());
+__container.register(MinutesService, new MinutesService());
+__container.register(UserService, new UserService(__container.get<HttpClient>(HttpClient)));
+__container.register(PracticeLogService, new PracticeLogService());
+__container.register(HttpClient, new HttpClient());
 
 const __navigator = new RgNavigator([{"path":"","redirectTo":"splash"},{"path":"splash"},{"path":"home"},{"path":"lesson/:id"},{"path":"about"},{"path":"**"}]);
 const __router = new Router(__navigator);
@@ -466,10 +822,12 @@ export function Home() {
   const [starterLessons, setStarterLessons] = useState([]);
   const [batchLessons, setBatchLessons] = useState([]);
   const [formsLessons, setFormsLessons] = useState([]);
+  const [dataLessons, setDataLessons] = useState([]);
   const ngOnInit = () => {
     setStarterLessons(lessons.lessons.filter((l: Lesson) => l.id <= 5));
     setBatchLessons(lessons.lessons.filter((l: Lesson) => l.id >= 6 && l.id <= 25));
-    setFormsLessons(lessons.lessons.filter((l: Lesson) => l.id >= 26));
+    setFormsLessons(lessons.lessons.filter((l: Lesson) => l.id >= 26 && l.id <= 45));
+    setDataLessons(lessons.lessons.filter((l: Lesson) => l.id >= 46));
   };
   const openMenu = () => {
     setMenuOpen(true);
@@ -516,9 +874,15 @@ export function Home() {
           <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
         ))}
       </RgList>
+      <RgText variant="label">Services, routing, and data: lessons 46 to 65</RgText>
+      <RgList>
+        {dataLessons.map((l, index) => (
+          <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+        ))}
+      </RgList>
       <RgCard>
         <RgText variant="title">Coming next</RgText>
-        <RgText variant="bodyLarge">The next batch is services, routing, and data: services and dependency injection, routing in depth, HttpClient over fetch, signals and reactive services, and a small real app built lesson by lesson as the capstone. Later batches follow the Angular documentation, topic by topic, each with its Rangular equivalent.</RgText>
+        <RgText variant="bodyLarge">The lesson batches are complete: the curriculum now covers the whole framework, from the first component to a small real app. Next come the app comforts: search across lessons, bookmarks with resume where you left off, and a try it editor for the most common lessons, then the store release.</RgText>
       </RgCard>
     </RgSection>
   );
@@ -819,6 +1183,126 @@ export function Lesson({ __rgRoute }: { __rgRoute?: any }) {
         <RgCard>
           <RgText variant="label">Live demo: a complete form, sign up</RgText>
           <SignupDemo />
+        </RgCard>
+      )}
+      {(lessonId === 46) && (
+        <RgCard>
+          <RgText variant="label">Live demo: a first service</RgText>
+          <ServiceBasicsDemo />
+        </RgCard>
+      )}
+      {(lessonId === 47) && (
+        <RgCard>
+          <RgText variant="label">Live demo: constructor injection</RgText>
+          <InjectionDemo />
+        </RgCard>
+      )}
+      {(lessonId === 48) && (
+        <RgCard>
+          <RgText variant="label">Live demo: one shared instance</RgText>
+          <SingletonDemo />
+        </RgCard>
+      )}
+      {(lessonId === 49) && (
+        <RgCard>
+          <RgText variant="label">Live demo: services using services</RgText>
+          <ContainerDemo />
+        </RgCard>
+      )}
+      {(lessonId === 50) && (
+        <RgCard>
+          <RgText variant="label">Live demo: sharing state between siblings</RgText>
+          <SharingDemo />
+        </RgCard>
+      )}
+      {(lessonId === 51) && (
+        <RgCard>
+          <RgText variant="label">Live demo: assign, do not mutate</RgText>
+          <ReactivityDemo />
+        </RgCard>
+      )}
+      {(lessonId === 52) && (
+        <RgCard>
+          <RgText variant="label">Live demo: a service as the store</RgText>
+          <StoreDemo />
+        </RgCard>
+      )}
+      {(lessonId === 53) && (
+        <RgCard>
+          <RgText variant="label">Live demo: fields and derived values</RgText>
+          <SignalsDemo />
+        </RgCard>
+      )}
+      {(lessonId === 54) && (
+        <RgCard>
+          <RgText variant="label">Live demo: this app's route table</RgText>
+          <RoutesTableDemo />
+        </RgCard>
+      )}
+      {(lessonId === 55) && (
+        <RgCard>
+          <RgText variant="label">Live demo: routerLink, string and array</RgText>
+          <RouterLinkDemo />
+        </RgCard>
+      )}
+      {(lessonId === 56) && (
+        <RgCard>
+          <RgText variant="label">Live demo: links with parameters</RgText>
+          <RouteParamsDemo />
+        </RgCard>
+      )}
+      {(lessonId === 57) && (
+        <RgCard>
+          <RgText variant="label">Live demo: reading this lesson's route</RgText>
+          <ActivatedRouteDemo />
+        </RgCard>
+      )}
+      {(lessonId === 58) && (
+        <RgCard>
+          <RgText variant="label">Live demo: navigate from code</RgText>
+          <ProgrammaticNavDemo />
+        </RgCard>
+      )}
+      {(lessonId === 59) && (
+        <RgCard>
+          <RgText variant="label">Live demo: the edges of the route table</RgText>
+          <RedirectsDemo />
+        </RgCard>
+      )}
+      {(lessonId === 60) && (
+        <RgCard>
+          <RgText variant="label">Live demo: the check before you navigate</RgText>
+          <RouteGateDemo />
+        </RgCard>
+      )}
+      {(lessonId === 61) && (
+        <RgCard>
+          <RgText variant="label">Live demo: a real GET request</RgText>
+          <HttpBasicsDemo />
+        </RgCard>
+      )}
+      {(lessonId === 62) && (
+        <RgCard>
+          <RgText variant="label">Live demo: loading, error, and data</RgText>
+          <HttpStatesDemo />
+        </RgCard>
+      )}
+      {(lessonId === 63) && (
+        <RgCard>
+          <RgText variant="label">Live demo: HTTP behind a service</RgText>
+          <DataServiceDemo />
+        </RgCard>
+      )}
+      {(lessonId === 64) && (
+        <RgCard>
+          <RgText variant="label">Live demo: the practice log, data layer</RgText>
+          <CapstoneDataDemo />
+        </RgCard>
+      )}
+      {(lessonId === 65) && (
+        <RgCard>
+          <RgText variant="label">Live demo: the practice log, whole</RgText>
+          <CapstoneDemo />
         </RgCard>
       )}
       {lesson && (
@@ -2150,6 +2634,642 @@ export function SignupDemo() {
       {submitted && (
         <RgText variant="bodyLarge">Welcome aboard, {name}. Your account was created.</RgText>
       )}
+    </>
+  );
+}
+
+export function ServiceBasicsDemo() {
+  const quotes = __container.get<QuoteService>(QuoteService);
+  useSyncExternalStore((cb) => quotes.__subscribe(cb), () => quotes.__getVersion());
+  const next = () => {
+    quotes.next();
+  };
+  return (
+    <>
+      <RgText variant="bodyLarge">{quotes.currentQuote()}</RgText>
+      <RgButton onPress={() => next()}>Next quote</RgButton>
+      <RgText variant="bodyLarge">Quote {(quotes.position + 1)} of {quotes.quotes.length}, served by the QuoteService. This component stores none of it.</RgText>
+    </>
+  );
+}
+
+export function InjectionDemo() {
+  const tally = __container.get<TallyService>(TallyService);
+  useSyncExternalStore((cb) => tally.__subscribe(cb), () => tally.__getVersion());
+  const trail = __container.get<TrailService>(TrailService);
+  useSyncExternalStore((cb) => trail.__subscribe(cb), () => trail.__getVersion());
+  const tallyAndRecord = () => {
+    tally.add();
+    trail.record('The tally reached ' + tally.count);
+  };
+  return (
+    <>
+      <RgText variant="bodyLarge">The tally stands at {tally.count}.</RgText>
+      <RgButton onPress={() => tallyAndRecord()}>Add one and record it</RgButton>
+      {(trail.lines.length === 0) && (
+        <RgText variant="bodyLarge">The trail is empty. One tap writes into both services.</RgText>
+      )}
+      {trail.lines.map((line, index) => (
+        <RgText key={line?.id ?? index} variant="bodyLarge">{line}</RgText>
+      ))}
+    </>
+  );
+}
+
+export function SingletonDemo() {
+  return (
+    <>
+      <RgText variant="bodyLarge">Two components, one notebook. Neither passes anything to the other.</RgText>
+      <NoteWriter />
+      <NoteReader />
+    </>
+  );
+}
+
+export function NoteWriter() {
+  const notebook = __container.get<NotebookService>(NotebookService);
+  useSyncExternalStore((cb) => notebook.__subscribe(cb), () => notebook.__getVersion());
+  const [draft, setDraft] = useState('');
+  const add = () => {
+    notebook.add(draft);
+    setDraft('');
+  };
+  return (
+    <>
+      <RgInput label="A note for the notebook" placeholder="Write a line" value={draft} onChangeText={($event) => setDraft($event)} />
+      <RgButton disabled={(draft === '')} onPress={() => add()}>Add to the notebook</RgButton>
+    </>
+  );
+}
+
+export function NoteReader() {
+  const notebook = __container.get<NotebookService>(NotebookService);
+  useSyncExternalStore((cb) => notebook.__subscribe(cb), () => notebook.__getVersion());
+  return (
+    <>
+      <RgText variant="label">The notebook, read by a second component</RgText>
+      {(notebook.lines.length === 0) && (
+        <RgText variant="bodyLarge">Nothing yet. Add a line above and watch it land here.</RgText>
+      )}
+      {notebook.lines.map((line, index) => (
+        <RgText key={line?.id ?? index} variant="bodyLarge">{line}</RgText>
+      ))}
+      {(notebook.lines.length > 0) && (
+        <RgText variant="bodyLarge">{notebook.lines.length} lines in the one notebook.</RgText>
+      )}
+    </>
+  );
+}
+
+export function ContainerDemo() {
+  const report = __container.get<ReportService>(ReportService);
+  useSyncExternalStore((cb) => report.__subscribe(cb), () => report.__getVersion());
+  const bump = () => {
+    report.bump();
+  };
+  return (
+    <>
+      <RgText variant="bodyLarge">{report.report()}</RgText>
+      <RgButton onPress={() => bump()}>Bump, through the report service</RgButton>
+      <RgText variant="bodyLarge">Bumps relayed by the report service: {report.relayed}</RgText>
+      <RgText variant="bodyLarge">This component never injects the counter. It only knows the report service.</RgText>
+    </>
+  );
+}
+
+export function SharingDemo() {
+  return (
+    <>
+      <ProfileEditor />
+      <ProfileGreeter />
+    </>
+  );
+}
+
+export function ProfileEditor() {
+  const profile = __container.get<ProfileService>(ProfileService);
+  useSyncExternalStore((cb) => profile.__subscribe(cb), () => profile.__getVersion());
+  const [nameDraft, setNameDraft] = useState('');
+  const [practiceDraft, setPracticeDraft] = useState('');
+  const ngOnInit = () => {
+    setNameDraft(profile.name);
+    setPracticeDraft(profile.practice);
+  };
+  const save = () => {
+    profile.setName(nameDraft);
+    profile.setPractice(practiceDraft);
+  };
+  useEffect(() => {
+    ngOnInit();
+  }, []);
+  return (
+    <>
+      <RgInput label="Your name" placeholder="e.g. Bigyan" value={nameDraft} onChangeText={($event) => setNameDraft($event)} />
+      <RgInput label="Today's practice" placeholder="e.g. Yoga" value={practiceDraft} onChangeText={($event) => setPracticeDraft($event)} />
+      <RgButton onPress={() => save()}>Save to the profile</RgButton>
+    </>
+  );
+}
+
+export function ProfileGreeter() {
+  const profile = __container.get<ProfileService>(ProfileService);
+  useSyncExternalStore((cb) => profile.__subscribe(cb), () => profile.__getVersion());
+  return (
+    <>
+      <RgText variant="label">The greeter, a separate component with no inputs</RgText>
+      <RgText variant="bodyLarge">Hello, {profile.name}.</RgText>
+      <RgText variant="bodyLarge">Today is for {profile.practice}.</RgText>
+    </>
+  );
+}
+
+export function ReactivityDemo() {
+  const shelf = __container.get<ShelfService>(ShelfService);
+  useSyncExternalStore((cb) => shelf.__subscribe(cb), () => shelf.__getVersion());
+  const [taps, setTaps] = useState(0);
+  const quiet = () => {
+    shelf.addQuietly('Book');
+  };
+  const proper = () => {
+    shelf.addProperly('Book');
+  };
+  const tap = () => {
+    setTaps(taps + 1);
+  };
+  return (
+    <>
+      <RgList>
+        {shelf.items.map((item, index) => (
+          <RgRow key={item?.id ?? index} title={item} />
+        ))}
+      </RgList>
+      <RgButton onPress={() => quiet()}>Add a book quietly (mutate the array)</RgButton>
+      <RgButton onPress={() => proper()}>Add a book properly (assign a new array)</RgButton>
+      <RgButton onPress={() => tap()}>A local change in this component (taps: {taps})</RgButton>
+      <RgText variant="bodyLarge">Try it in order: quiet first, and the list does not move. Then the local change, and the book appears: the data had it all along, the screen was never told. Proper adds show at once.</RgText>
+    </>
+  );
+}
+
+export function StoreDemo() {
+  return (
+    <>
+      <QuoteBrowser />
+      <FavouriteList />
+    </>
+  );
+}
+
+export function QuoteBrowser() {
+  const favourites = __container.get<FavouritesService>(FavouritesService);
+  useSyncExternalStore((cb) => favourites.__subscribe(cb), () => favourites.__getVersion());
+  const quotes = [
+    'Practice is the mother of skill.',
+    'What you repeat every day, you become.',
+    'Small steps, taken daily, cross the mountain.',
+  ];
+  const save = (quote: string) => {
+    favourites.save(quote);
+  };
+  return (
+    <>
+      {quotes.map((q, index) => (
+        <RgSection key={q?.id ?? index}>
+          <RgText variant="bodyLarge">{q}</RgText>
+          <RgButton onPress={() => save(q)}>Save this quote</RgButton>
+        </RgSection>
+      ))}
+    </>
+  );
+}
+
+export function FavouriteList() {
+  const favourites = __container.get<FavouritesService>(FavouritesService);
+  useSyncExternalStore((cb) => favourites.__subscribe(cb), () => favourites.__getVersion());
+  const clear = () => {
+    favourites.clear();
+  };
+  return (
+    <>
+      <RgText variant="label">Your saved quotes, read from the same service</RgText>
+      {(favourites.saved.length === 0) && (
+        <RgText variant="bodyLarge">None saved yet. Save one above and it lands here.</RgText>
+      )}
+      {favourites.saved.map((q, index) => (
+        <RgText key={q?.id ?? index} variant="bodyLarge">{q}</RgText>
+      ))}
+      {(favourites.saved.length > 0) && (
+        <RgText variant="bodyLarge">{favourites.saved.length} saved. Saving the same quote twice keeps one copy.</RgText>
+      )}
+      <RgButton disabled={(favourites.saved.length === 0)} onPress={() => clear()}>Clear the saved quotes</RgButton>
+    </>
+  );
+}
+
+export function SignalsDemo() {
+  return (
+    <>
+      <MinutesStepper />
+      <MinutesDisplay />
+    </>
+  );
+}
+
+export function MinutesStepper() {
+  const focus = __container.get<MinutesService>(MinutesService);
+  useSyncExternalStore((cb) => focus.__subscribe(cb), () => focus.__getVersion());
+  const add15 = () => {
+    focus.add(15);
+  };
+  const add30 = () => {
+    focus.add(30);
+  };
+  const reset = () => {
+    focus.reset();
+  };
+  return (
+    <>
+      <RgButton onPress={() => add15()}>Add 15 minutes</RgButton>
+      <RgButton onPress={() => add30()}>Add 30 minutes</RgButton>
+      <RgButton onPress={() => reset()}>Reset</RgButton>
+    </>
+  );
+}
+
+export function MinutesDisplay() {
+  const focus = __container.get<MinutesService>(MinutesService);
+  useSyncExternalStore((cb) => focus.__subscribe(cb), () => focus.__getVersion());
+  const hoursText = () => {
+    const m = focus.minutes;
+    return (m - (m % 60)) / 60 + 'h ' + (m % 60) + 'm';
+  };
+  const stateText = () => {
+    return (focus.minutes >= 60 ? 'Past an hour of focus.' : 'Under an hour so far.');
+  };
+  return (
+    <>
+      <RgText variant="label">The display, a separate component reading the same service</RgText>
+      <RgText variant="bodyLarge">{focus.minutes} minutes of focus</RgText>
+      <RgText variant="bodyLarge">That is {hoursText()}.</RgText>
+      <RgText variant="bodyLarge">{stateText()}</RgText>
+    </>
+  );
+}
+
+export function RoutesTableDemo() {
+  const table = [
+    { path: '(empty path)', screen: 'Redirects to splash' },
+    { path: 'splash', screen: 'SplashComponent' },
+    { path: 'home', screen: 'HomeComponent' },
+    { path: 'lesson/:id', screen: 'LessonComponent' },
+    { path: 'about', screen: 'AboutComponent' },
+    { path: '**', screen: 'NotFoundComponent' },
+  ];
+  return (
+    <>
+      <RgList>
+        {table.map((r, index) => (
+          <RgRow key={r?.id ?? index} title={r.path} subtitle={r.screen} />
+        ))}
+      </RgList>
+      <RgText variant="bodyLarge">This screen is the LessonComponent row at work: the router matched lesson/:id and the outlet in the app shell rendered this lesson in its place.</RgText>
+      <RgText variant="bodyLarge">The two buttons are real links, and they leave this lesson:</RgText>
+      <RgButton onPress={() => __router.navigateByUrl("/about")}>Open About through a link</RgButton>
+      <RgButton onPress={() => __router.navigateByUrl("/home")}>Open Home through a link</RgButton>
+    </>
+  );
+}
+
+export function RouterLinkDemo() {
+  return (
+    <>
+      <RgList>
+        <RgRow title="Lesson 1: Introduction" subtitle="Array link: ['/lesson', 1]" onPress={() => __router.navigate(['/lesson', 1])} />
+        <RgRow title="Lesson 26: Template driven forms with ngModel" subtitle="Array link: ['/lesson', 26]" onPress={() => __router.navigate(['/lesson', 26])} />
+        <RgRow title="Lesson 46: Services" subtitle="Array link: ['/lesson', 46]" onPress={() => __router.navigate(['/lesson', 46])} />
+      </RgList>
+      <RgButton onPress={() => __router.navigateByUrl("/about")}>About, with a plain string link</RgButton>
+    </>
+  );
+}
+
+export function RouteParamsDemo() {
+  return (
+    <>
+      <RgList>
+        <RgRow title="Lesson 6: ngFor and lists" subtitle="The 6 travels as the id parameter" onPress={() => __router.navigate(['/lesson', 6])} />
+        <RgRow title="Lesson 27: The input block" subtitle="The 27 travels as the id parameter" onPress={() => __router.navigate(['/lesson', 27])} />
+        <RgRow title="Lesson 45: A complete form: sign up" subtitle="The 45 travels as the id parameter" onPress={() => __router.navigate(['/lesson', 45])} />
+      </RgList>
+      <RgButton onPress={() => __router.navigate(['/lesson', 56])}>Reopen this very lesson (parameter 56)</RgButton>
+    </>
+  );
+}
+
+export function ActivatedRouteDemo({ __rgRoute }: { __rgRoute?: any }) {
+  const route = __rgRoute;
+  const [snapId, setSnapId] = useState('');
+  const [mapId, setMapId] = useState('');
+  const [emissions, setEmissions] = useState(0);
+  const ngOnInit = () => {
+    setSnapId(route.snapshot.params.id);
+    route.paramMap.subscribe((params) => {
+  setMapId(params.id);
+  setEmissions(emissions + 1);
+});
+  };
+  useEffect(() => {
+    ngOnInit();
+  }, []);
+  return (
+    <>
+      <RgText variant="bodyLarge">The snapshot, read once in ngOnInit, says the id in the path is {snapId}.</RgText>
+      <RgText variant="bodyLarge">paramMap emitted the params as a plain object; its id reads {mapId}.</RgText>
+      <RgText variant="bodyLarge">Emissions this screen has received: {emissions}</RgText>
+      <RgText variant="bodyLarge">Nobody passed these values in. They came from the route itself: the number in the address of the lesson you are reading.</RgText>
+    </>
+  );
+}
+
+export function ProgrammaticNavDemo() {
+  const router = __router;
+  const [target, setTarget] = useState('');
+  const go = () => {
+    router.navigate(['/lesson', target]);
+  };
+  const goAbout = () => {
+    router.navigateByUrl('/about');
+  };
+  const goHome = () => {
+    router.navigate(['/home']);
+  };
+  return (
+    <>
+      <RgInput label="Lesson number" placeholder="Type a number from 1 to 65" value={target} onChangeText={($event) => setTarget($event)} />
+      <RgButton disabled={(target === '')} onPress={() => go()}>Go to that lesson</RgButton>
+      <RgButton onPress={() => goAbout()}>About, by navigateByUrl</RgButton>
+      <RgButton onPress={() => goHome()}>Home, by navigate</RgButton>
+    </>
+  );
+}
+
+export function RedirectsDemo() {
+  return (
+    <>
+      <RgButton onPress={() => __router.navigateByUrl("/no-such-screen")}>Open a path that does not exist</RgButton>
+      <RgButton onPress={() => __router.navigateByUrl("/")}>Open the app root path</RgButton>
+      <RgText variant="bodyLarge">The first lands on the not found screen, which has its own button back to the lessons. The second lands on the splash screen, which is where every visit to this app begins.</RgText>
+    </>
+  );
+}
+
+export function RouteGateDemo() {
+  const router = __router;
+  const snack = __snackBar;
+  const [signedIn, setSignedIn] = useState(false);
+  const onSignedIn = (value: boolean) => {
+    setSignedIn(value);
+  };
+  const warn = () => {
+    snack.open('Sign in first. The diary stays closed.');
+  };
+  const openDiary = () => {
+    router.navigate(['/about']);
+  };
+  return (
+    <>
+      <RgSwitch checked={signedIn} onChange={($event) => onSignedIn($event)}>Signed in</RgSwitch>
+      <RgText variant="bodyLarge">{(signedIn ? 'You are signed in.' : 'You are signed out.')}</RgText>
+      {signedIn && (
+        <RgButton onPress={() => openDiary()}>Open my diary</RgButton>
+      )}
+      {!signedIn && (
+        <RgButton onPress={() => warn()}>Open my diary</RgButton>
+      )}
+      <RgText variant="bodyLarge">One button, two handlers, chosen by the check. In this tutorial the About screen plays the diary, so you can watch the navigation happen.</RgText>
+    </>
+  );
+}
+
+export function HttpBasicsDemo() {
+  const http = __container.get<HttpClient>(HttpClient);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [city, setCity] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState('');
+  const load = () => {
+    setLoading(true);
+    setFailed('');
+    http.get('https://jsonplaceholder.typicode.com/users/1').subscribe((data) => {
+  setName(data.name);
+  setEmail(data.email);
+  setCity(data.address.city);
+  setLoading(false);
+}, (err) => {
+  setFailed('The request failed. Check the connection and try again.');
+  setLoading(false);
+});
+  };
+  return (
+    <>
+      <RgButton disabled={loading} onPress={() => load()}>Load one user</RgButton>
+      {loading && (
+        <RgSpinner />
+      )}
+      {loading && (
+        <RgText variant="bodyLarge">Loading...</RgText>
+      )}
+      {failed && (
+        <RgText variant="bodyLarge">{failed}</RgText>
+      )}
+      {name && (
+        <RgSection>
+          <RgText variant="bodyLarge">Name: {name}</RgText>
+          <RgText variant="bodyLarge">Email: {email}</RgText>
+          <RgText variant="bodyLarge">City: {city}</RgText>
+        </RgSection>
+      )}
+      {((!name && !loading) && !failed) && (
+        <RgText variant="bodyLarge">Nothing loaded yet. Tap the button and the request travels.</RgText>
+      )}
+    </>
+  );
+}
+
+export function HttpStatesDemo() {
+  const http = __container.get<HttpClient>(HttpClient);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState('');
+  const ngOnInit = () => {
+    load();
+  };
+  const load = () => {
+    setLoading(true);
+    setFailed('');
+    http.get('https://jsonplaceholder.typicode.com/users').subscribe((data) => {
+  setUsers(data);
+  setLoading(false);
+}, (err) => {
+  setFailed('The user list could not be loaded. Check the connection and retry.');
+  setLoading(false);
+});
+  };
+  useEffect(() => {
+    ngOnInit();
+  }, []);
+  return (
+    <>
+      <RgButton disabled={loading} onPress={() => load()}>Reload the users</RgButton>
+      {loading && (
+        <RgSpinner />
+      )}
+      {loading && (
+        <RgText variant="bodyLarge">Loading the user list...</RgText>
+      )}
+      {failed && (
+        <RgText variant="bodyLarge">{failed}</RgText>
+      )}
+      {failed && (
+        <RgButton onPress={() => load()}>Retry</RgButton>
+      )}
+      <RgList>
+        {users.map((u, index) => (
+          <RgRow key={u?.id ?? index} title={u.name} subtitle={u.email} />
+        ))}
+      </RgList>
+      {(users.length > 0) && (
+        <RgText variant="bodyLarge">{users.length} users loaded.</RgText>
+      )}
+    </>
+  );
+}
+
+export function DataServiceDemo() {
+  const user = __container.get<UserService>(UserService);
+  useSyncExternalStore((cb) => user.__subscribe(cb), () => user.__getVersion());
+  const ngOnInit = () => {
+    user.load(1);
+  };
+  const prev = () => {
+    user.load(user.which - 1);
+  };
+  const next = () => {
+    user.load(user.which + 1);
+  };
+  useEffect(() => {
+    ngOnInit();
+  }, []);
+  return (
+    <>
+      {user.loading && (
+        <RgSpinner />
+      )}
+      {user.loading && (
+        <RgText variant="bodyLarge">Loading user {user.which}...</RgText>
+      )}
+      {user.failed && (
+        <RgText variant="bodyLarge">{user.failed}</RgText>
+      )}
+      {user.name && (
+        <RgSection>
+          <RgText variant="bodyLarge">Name: {user.name}</RgText>
+          <RgText variant="bodyLarge">Email: {user.email}</RgText>
+          <RgText variant="bodyLarge">City: {user.city}</RgText>
+        </RgSection>
+      )}
+      <RgButton disabled={((user.which <= 1) || user.loading)} onPress={() => prev()}>Previous user</RgButton>
+      <RgButton disabled={((user.which >= 3) || user.loading)} onPress={() => next()}>Next user</RgButton>
+      <RgText variant="bodyLarge">User {user.which} of 3, fetched and held by the UserService. This component only reads.</RgText>
+    </>
+  );
+}
+
+export function CapstoneDataDemo() {
+  return (
+    <>
+      <LogQuickAdd />
+      <LogList />
+    </>
+  );
+}
+
+export function LogQuickAdd() {
+  const log = __container.get<PracticeLogService>(PracticeLogService);
+  useSyncExternalStore((cb) => log.__subscribe(cb), () => log.__getVersion());
+  const yoga = () => {
+    log.add('Yoga', 20);
+  };
+  const puja = () => {
+    log.add('Puja', 15);
+  };
+  const reading = () => {
+    log.add('Reading', 10);
+  };
+  return (
+    <>
+      <RgButton onPress={() => yoga()}>Log Yoga, 20 min</RgButton>
+      <RgButton onPress={() => puja()}>Log Puja, 15 min</RgButton>
+      <RgButton onPress={() => reading()}>Log Reading, 10 min</RgButton>
+    </>
+  );
+}
+
+export function LogList() {
+  const log = __container.get<PracticeLogService>(PracticeLogService);
+  useSyncExternalStore((cb) => log.__subscribe(cb), () => log.__getVersion());
+  return (
+    <>
+      <RgText variant="label">The log, read from the service</RgText>
+      {(log.entries.length === 0) && (
+        <RgText variant="bodyLarge">Nothing logged yet. Tap a button above and the first entry lands here.</RgText>
+      )}
+      {log.entries.map((e, index) => (
+        <RgText key={e?.id ?? index} variant="bodyLarge">{e.name}: {e.minutes} min</RgText>
+      ))}
+      <RgText variant="bodyLarge">Total today: {log.total} min</RgText>
+    </>
+  );
+}
+
+export function CapstoneDemo() {
+  const log = __container.get<PracticeLogService>(PracticeLogService);
+  useSyncExternalStore((cb) => log.__subscribe(cb), () => log.__getVersion());
+  const snack = __snackBar;
+  const [name, setName] = useState('');
+  const [minutes, setMinutes] = useState(0);
+  const setMinutes = (value: number) => {
+    setMinutes(value);
+  };
+  const add = () => {
+    log.add(name, minutes);
+    snack.open('Practice logged');
+    setName('');
+    setMinutes(0);
+  };
+  const remove = (entry: any) => {
+    log.remove(entry);
+  };
+  return (
+    <>
+      <RgInput label="Practice" placeholder="e.g. Yoga" value={name} onChangeText={($event) => setName($event)} />
+      <RgText variant="bodyLarge">Minutes: {((minutes === 0) ? 'not picked yet' : minutes)}</RgText>
+      <RgButton onPress={() => setMinutes(10)}>10 min</RgButton>
+      <RgButton onPress={() => setMinutes(15)}>15 min</RgButton>
+      <RgButton onPress={() => setMinutes(20)}>20 min</RgButton>
+      <RgButton onPress={() => setMinutes(30)}>30 min</RgButton>
+      <RgButton disabled={((name === '') || (minutes === 0))} onPress={() => add()}>Add to the log</RgButton>
+      {(log.entries.length === 0) && (
+        <RgText variant="bodyLarge">The log is empty. Add your first practice above.</RgText>
+      )}
+      {log.entries.map((e, index) => (
+        <RgSection key={e?.id ?? index}>
+          <RgRow title={e.name} subtitle={(e.minutes + ' min')} />
+          <RgButton onPress={() => remove(e)}>Remove</RgButton>
+        </RgSection>
+      ))}
+      <RgText variant="bodyLarge">Total today: {log.total} min</RgText>
     </>
   );
 }

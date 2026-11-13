@@ -45,6 +45,26 @@ import { AutocompleteDemoComponent } from './demos/autocomplete.component';
 import { SliderDemoComponent } from './demos/slider.component';
 import { ChoiceFormDemoComponent } from './demos/choice-form.component';
 import { SignupDemoComponent } from './demos/signup.component';
+import { ServiceBasicsDemoComponent } from './demos/service-basics.component';
+import { InjectionDemoComponent } from './demos/injection.component';
+import { SingletonDemoComponent } from './demos/singleton.component';
+import { ContainerDemoComponent } from './demos/container.component';
+import { SharingDemoComponent } from './demos/sharing.component';
+import { ReactivityDemoComponent } from './demos/reactivity.component';
+import { StoreDemoComponent } from './demos/store.component';
+import { SignalsDemoComponent } from './demos/signals.component';
+import { RoutesTableDemoComponent } from './demos/routes-table.component';
+import { RouterLinkDemoComponent } from './demos/router-link.component';
+import { RouteParamsDemoComponent } from './demos/route-params.component';
+import { ActivatedRouteDemoComponent } from './demos/activated-route.component';
+import { ProgrammaticNavDemoComponent } from './demos/programmatic-nav.component';
+import { RedirectsDemoComponent } from './demos/redirects.component';
+import { RouteGateDemoComponent } from './demos/route-gate.component';
+import { HttpBasicsDemoComponent } from './demos/http-basics.component';
+import { HttpStatesDemoComponent } from './demos/http-states.component';
+import { DataServiceDemoComponent } from './demos/data-service.component';
+import { CapstoneDataDemoComponent } from './demos/capstone-data.component';
+import { CapstoneDemoComponent } from './demos/capstone.component';
 
 /**
  * One lesson screen. The lesson data comes from LessonService by

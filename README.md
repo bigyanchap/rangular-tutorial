@@ -16,7 +16,7 @@ gap, this app will find it.
 
 This app will be published on the App Store and Google Play. This
 build carries the foundation: splash screen, lesson engine, and
-lessons 1 to 45.
+lessons 1 to 65.
 
 ## Run it on your Mac and phone
 
@@ -47,10 +47,10 @@ repo cloned to run the tutorial.
   framework 0.1.2). The Splash screen has no app bar, by design.
 - Splash screen: what Rangular is and what this app is, in two short
   cards, with a Start learning button.
-- Home: the lesson list in three groups (lessons 1 to 5, lessons
-  6 to 25, then lessons 26 to 45), with a how to use card and a
-  coming next card. About lives in the menu now, not in a list
-  on Home.
+- Home: the lesson list in four groups (lessons 1 to 5, lessons
+  6 to 25, lessons 26 to 45, then lessons 46 to 65), with a how
+  to use card and a coming next card. About lives in the menu
+  now, not in a list on Home.
 - Lessons 1 to 5, each with the same layout: a header card with the
   explanation, a Code section showing the lesson's code in the
   framework's editor styled code block, a live demo where the topic
@@ -71,9 +71,10 @@ repo cloned to run the tutorial.
   7. ngIf in depth: a sign in panel built from the opposite pair
      (Rangular does not generate else branches yet, and the lesson
      says so plainly)
-  8. Class and style bindings: named classes swapped with ngIf
-     (dynamic class and style bindings are not wired yet, and the
-     lesson says so plainly)
+  8. Class and style bindings: a [class.name] toggle over
+     component styles, and named classes swapped with ngIf (the
+     whole object forms warn instead of applying, and the lesson
+     says so plainly)
   9. Child components: three tiles, each with its own count
   10. Inputs: a greeting card fed by parent fields
   11. Outputs and EventEmitter: quote cards reporting saves up
@@ -135,6 +136,59 @@ repo cloned to run the tutorial.
       one summary
   45. A complete form: sign up, with validators, a terms
       checkbox, a gated submit, and a SnackBar after the save
+- Lessons 46 to 65 (Batch 3: services, routing, and data), in
+  the same layout, each with a live demo component:
+  46. Services: a QuoteService the component only reads and
+      advances
+  47. Constructor injection: two services handed in, both used
+      by one tap
+  48. providedIn root: a writer and a reader component sharing
+      one notebook service, with nothing passed between them
+  49. The container: a report service injecting a counter
+      service, the component knowing only the top layer
+  50. Sharing state between components: an editor and a
+      greeter sibling, wired only by a profile service
+  51. Updating service state: a quiet mutation the screen
+      never shows, beside a proper assignment that shows at
+      once
+  52. A service as the store: a quote browser saving into a
+      favourites service, a second component reading it
+  53. Signals: no signal() here, stated plainly; a minutes
+      field in a service and a derived hours text read by a
+      method, the pattern Rangular offers today
+  54. Routes and the outlet: this app's own route table, with
+      real links out of the lesson
+  55. routerLink: rows carrying array links to real lessons,
+      and a string link to About
+  56. Route parameters: rows sending different numbers into
+      the one lesson/:id entry, and a button reopening the
+      lesson itself
+  57. ActivatedRoute: a demo reading this lesson's own id
+      from the snapshot and from paramMap, counting emissions
+  58. Programmatic navigation: type a lesson number and a
+      method navigates there; navigateByUrl and navigate to
+      fixed places beside it
+  59. Redirects and the wildcard: a button opening a path that
+      does not exist, and one opening the root path, both
+      leaving the lesson on purpose
+  60. What routing does not do yet: the limits stated plainly,
+      and a diary gate demoing the check before you navigate
+  61. HttpClient: a real GET to a public practice API, with
+      loading and error arrows (in the browser preview the
+      client is a stub and the demo waits at Loading, and the
+      lesson says so)
+  62. Loading, error, and data: a user list that loads on
+      open, with a spinner, a retry on failure, and rows on
+      success
+  63. Data services: a UserService owning the request and the
+      state, paged through three users by a component that
+      only reads
+  64. Capstone part 1: a practice log service with quick add
+      buttons and a reading list, the data layer only
+  65. Capstone part 2: the practice log whole: a name input,
+      minute choice buttons, a gated add, a remove per entry,
+      the running total, and a toast; entries from lesson 64
+      are still there, because the service outlives the screen
 - About screen: what the app is, how the tutorial grows, and the
   store plan. Reached from the drawer on Home; its back chevron
   returns to Home, like the lesson screens.

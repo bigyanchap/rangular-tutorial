@@ -1,0 +1,4 @@
+<label>The log, read from the service</label>
+<p *ngIf="log.entries.length === 0">Nothing logged yet. Tap a button above and the first entry lands here.</p>
+<p *ngFor="let e of log.entries">{{ e.name }}: {{ e.minutes }} min</p>
+<p>Total today: {{ log.total }} min</p>

@@ -1,0 +1,9 @@
+<button (click)="load()" [disabled]="loading">Reload the users</button>
+<spinner *ngIf="loading"></spinner>
+<p *ngIf="loading">Loading the user list...</p>
+<p *ngIf="failed">{{ failed }}</p>
+<button *ngIf="failed" (click)="load()">Retry</button>
+<list>
+  <row *ngFor="let u of users" [title]="u.name" [subtitle]="u.email"></row>
+</list>
+<p *ngIf="users.length > 0">{{ users.length }} users loaded.</p>

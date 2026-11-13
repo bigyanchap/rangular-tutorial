@@ -1,0 +1,4 @@
+<label>The notebook, read by a second component</label>
+<p *ngIf="notebook.lines.length === 0">Nothing yet. Add a line above and watch it land here.</p>
+<p *ngFor="let line of notebook.lines">{{ line }}</p>
+<p *ngIf="notebook.lines.length > 0">{{ notebook.lines.length }} lines in the one notebook.</p>

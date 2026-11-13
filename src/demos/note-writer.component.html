@@ -1,0 +1,2 @@
+<input label="A note for the notebook" placeholder="Write a line" [(ngModel)]="draft">
+<button (click)="add()" [disabled]="draft === ''">Add to the notebook</button>

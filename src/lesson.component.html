@@ -187,6 +187,86 @@
     <label>Live demo: a complete form, sign up</label>
     <app-signup-demo></app-signup-demo>
   </card>
+  <card *ngIf="lessonId === 46">
+    <label>Live demo: a first service</label>
+    <app-service-basics-demo></app-service-basics-demo>
+  </card>
+  <card *ngIf="lessonId === 47">
+    <label>Live demo: constructor injection</label>
+    <app-injection-demo></app-injection-demo>
+  </card>
+  <card *ngIf="lessonId === 48">
+    <label>Live demo: one shared instance</label>
+    <app-singleton-demo></app-singleton-demo>
+  </card>
+  <card *ngIf="lessonId === 49">
+    <label>Live demo: services using services</label>
+    <app-container-demo></app-container-demo>
+  </card>
+  <card *ngIf="lessonId === 50">
+    <label>Live demo: sharing state between siblings</label>
+    <app-sharing-demo></app-sharing-demo>
+  </card>
+  <card *ngIf="lessonId === 51">
+    <label>Live demo: assign, do not mutate</label>
+    <app-reactivity-demo></app-reactivity-demo>
+  </card>
+  <card *ngIf="lessonId === 52">
+    <label>Live demo: a service as the store</label>
+    <app-store-demo></app-store-demo>
+  </card>
+  <card *ngIf="lessonId === 53">
+    <label>Live demo: fields and derived values</label>
+    <app-signals-demo></app-signals-demo>
+  </card>
+  <card *ngIf="lessonId === 54">
+    <label>Live demo: this app's route table</label>
+    <app-routes-table-demo></app-routes-table-demo>
+  </card>
+  <card *ngIf="lessonId === 55">
+    <label>Live demo: routerLink, string and array</label>
+    <app-router-link-demo></app-router-link-demo>
+  </card>
+  <card *ngIf="lessonId === 56">
+    <label>Live demo: links with parameters</label>
+    <app-route-params-demo></app-route-params-demo>
+  </card>
+  <card *ngIf="lessonId === 57">
+    <label>Live demo: reading this lesson's route</label>
+    <app-activated-route-demo></app-activated-route-demo>
+  </card>
+  <card *ngIf="lessonId === 58">
+    <label>Live demo: navigate from code</label>
+    <app-programmatic-nav-demo></app-programmatic-nav-demo>
+  </card>
+  <card *ngIf="lessonId === 59">
+    <label>Live demo: the edges of the route table</label>
+    <app-redirects-demo></app-redirects-demo>
+  </card>
+  <card *ngIf="lessonId === 60">
+    <label>Live demo: the check before you navigate</label>
+    <app-route-gate-demo></app-route-gate-demo>
+  </card>
+  <card *ngIf="lessonId === 61">
+    <label>Live demo: a real GET request</label>
+    <app-http-basics-demo></app-http-basics-demo>
+  </card>
+  <card *ngIf="lessonId === 62">
+    <label>Live demo: loading, error, and data</label>
+    <app-http-states-demo></app-http-states-demo>
+  </card>
+  <card *ngIf="lessonId === 63">
+    <label>Live demo: HTTP behind a service</label>
+    <app-data-service-demo></app-data-service-demo>
+  </card>
+  <card *ngIf="lessonId === 64">
+    <label>Live demo: the practice log, data layer</label>
+    <app-capstone-data-demo></app-capstone-data-demo>
+  </card>
+  <card *ngIf="lessonId === 65">
+    <label>Live demo: the practice log, whole</label>
+    <app-capstone-demo></app-capstone-demo>
+  </card>
   <section *ngIf="lesson">
     <label>Best practice</label>
     <p>{{ lesson.tip }}</p>

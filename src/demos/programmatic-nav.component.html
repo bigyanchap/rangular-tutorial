@@ -1,0 +1,4 @@
+<input label="Lesson number" placeholder="Type a number from 1 to 65" [(ngModel)]="target">
+<button (click)="go()" [disabled]="target === ''">Go to that lesson</button>
+<button (click)="goAbout()">About, by navigateByUrl</button>
+<button (click)="goHome()">Home, by navigate</button>

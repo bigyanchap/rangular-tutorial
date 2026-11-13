@@ -1,0 +1,7 @@
+<list>
+  <row *ngFor="let item of shelf.items" [title]="item"></row>
+</list>
+<button (click)="quiet()">Add a book quietly (mutate the array)</button>
+<button (click)="proper()">Add a book properly (assign a new array)</button>
+<button (click)="tap()">A local change in this component (taps: {{ taps }})</button>
+<p>Try it in order: quiet first, and the list does not move. Then the local change, and the book appears: the data had it all along, the screen was never told. Proper adds show at once.</p>

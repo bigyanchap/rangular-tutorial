@@ -1,0 +1,10 @@
+<button (click)="load()" [disabled]="loading">Load one user</button>
+<spinner *ngIf="loading"></spinner>
+<p *ngIf="loading">Loading...</p>
+<p *ngIf="failed">{{ failed }}</p>
+<section *ngIf="name">
+  <p>Name: {{ name }}</p>
+  <p>Email: {{ email }}</p>
+  <p>City: {{ city }}</p>
+</section>
+<p *ngIf="!name && !loading && !failed">Nothing loaded yet. Tap the button and the request travels.</p>
