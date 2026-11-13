@@ -1,0 +1,5 @@
+<label>Enter the six digit code</label>
+<otp length="6" [value]="code" (change)="onCode($event)"></otp>
+<p *ngIf="code.length < 6">{{ code.length }} of 6 digits so far.</p>
+<p *ngIf="code.length === 6">Code complete: {{ code }}. This is the moment a real app would verify it.</p>
+<button (click)="clear()">Clear the code</button>

@@ -1,0 +1,4 @@
+<label>How was this morning's session?</label>
+<rating [value]="score" (change)="onScore($event)"></rating>
+<p *ngIf="score">You rated it {{ score }} of 5: {{ verdict }}.</p>
+<p *ngIf="!score">No rating yet. Tap a star.</p>

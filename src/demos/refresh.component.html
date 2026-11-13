@@ -1,0 +1,6 @@
+<p>Pull the list down to refresh it. Each refresh puts a fresh note on top.</p>
+<list [refreshing]="refreshing" (refresh)="reload()">
+  <row *ngFor="let n of notes" [title]="n.title" [detail]="n.detail"></row>
+</list>
+<p *ngIf="refreshCount > 0">Refreshed {{ refreshCount }} times.</p>
+<p *ngIf="refreshCount === 0">Not refreshed yet. The count line will stand here after the first pull.</p>

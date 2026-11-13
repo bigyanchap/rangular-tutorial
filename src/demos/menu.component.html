@@ -1,0 +1,10 @@
+<p>One message, waiting in your inbox. The button opens the actions you can take on it.</p>
+<button (click)="openMenu()">Message actions</button>
+<menu [open]="menuOpen" (close)="closeMenu()">
+  <menu-item icon="edit" (click)="act('Rename')">Rename</menu-item>
+  <menu-item icon="share" (click)="act('Share')">Share</menu-item>
+  <divider></divider>
+  <menu-item icon="delete" (click)="act('Delete')">Delete</menu-item>
+</menu>
+<p *ngIf="lastAction">Last action: {{ lastAction }}</p>
+<p *ngIf="!lastAction">No action chosen yet. Open the menu and pick one.</p>

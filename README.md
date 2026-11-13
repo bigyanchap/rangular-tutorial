@@ -16,7 +16,7 @@ gap, this app will find it.
 
 This app will be published on the App Store and Google Play. This
 build carries the foundation: splash screen, lesson engine, and
-lessons 1 to 65.
+lessons 1 to 95.
 
 ## Run it on your Mac and phone
 
@@ -47,10 +47,11 @@ repo cloned to run the tutorial.
   framework 0.1.2). The Splash screen has no app bar, by design.
 - Splash screen: what Rangular is and what this app is, in two short
   cards, with a Start learning button.
-- Home: the lesson list in four groups (lessons 1 to 5, lessons
-  6 to 25, lessons 26 to 45, then lessons 46 to 65), with a how
-  to use card and a coming next card. About lives in the menu
-  now, not in a list on Home.
+- Home: the lesson list in six groups (lessons 1 to 5, lessons
+  6 to 25, lessons 26 to 45, lessons 46 to 65, lessons
+  66 to 76, then lessons 77 to 95), with a how to use card and
+  a coming next card.
+  About lives in the menu now, not in a list on Home.
 - Lessons 1 to 5, each with the same layout: a header card with the
   explanation, a Code section showing the lesson's code in the
   framework's editor styled code block, a live demo where the topic
@@ -189,6 +190,74 @@ repo cloned to run the tutorial.
       minute choice buttons, a gated add, a remove per entry,
       the running total, and a toast; entries from lesson 64
       are still there, because the service outlives the screen
+- Lessons 66 to 76 (Batch 4: the Material pieces), in the
+  same layout, each with a live demo component:
+  66. Menu: a message actions panel whose items run, report
+      the pick below, and close the menu; a divider stands
+      before Delete
+  67. Drawer: a mailbox panel whose three section buttons
+      set the section on the screen behind and close it
+  68. Select: a city picker starting on its placeholder,
+      showing the picked option code below
+  69. Select in a form: a visit form where the select joins
+      an ngModel input and a switch, and the gated save reads
+      the stored field
+  70. Stepper: scheduling a practice in three steps, moved
+      by header taps, by pick buttons, and by Back and
+      Continue alike
+  71. Grid list: four place tiles in two columns, then three
+      short tiles in three columns
+  72. Grid list, masonry mode: six day tiles of very uneven
+      heights, dealt into two stacks so they stagger
+  73. Tree: a folder tree three levels deep, Inbox starting
+      expanded from its seed, Archive closed
+  74. Tooltip: one long press hint on each pressable host:
+      a button, a row, and an icon button, with taps recorded
+  75. Divider: a morning routine in three groups, held apart
+      by two hairlines and nothing else
+  76. Tables in depth: a sortable, paged table over a list
+      that renders the bound array in its own order below,
+      proving the array never moves while you sort
+- Lessons 77 to 95 (Batch 5: beyond Angular), in the same
+  layout, each with a live demo component:
+  77. Bottom navigation: a small screen whose three panels
+      follow the bar pinned under it, one item badged
+  78. Pull to refresh: a list whose refresh prepends a fresh
+      note and counts the pulls
+  79. Infinite scroll: a reading list whose next page appends
+      at the end, with a done line and a reset
+  80. Skeleton: a profile card traded with its skeleton shape
+      by one loading flag
+  81. Swipe row actions: an inbox where Star reports below
+      and Delete really removes the row
+  82. File picker: a photo pick reported by name, and a
+      multiple document pick listed as rows (on the phone the
+      real pickers open; in the preview the browser picker
+      stands in, and the lesson says so)
+  83. Input masks: a phone field and a member code, formatted
+      as you type, the formatted string as the value
+  84. Rating: stars whose number names a verdict word below
+  85. The OTP input: six digit boxes with a progress line and
+      a clear button
+  86. Carousel: three teaching cards paged by swipe, dots,
+      and chevrons
+  87. Timeline: one morning in three entries on a dotted rail
+  88. Calendar: a month view whose tapped day prints as an
+      ISO string, with the seed day restored by a button
+  89. Avatars and avatar groups: five people folded at three,
+      then initials and a photo standing alone
+  90. Empty state: an inbox that starts empty, loads, and
+      clears back to nothing
+  91. Charts: one week of minutes as bar, line, and pie over
+      a single array the buttons change
+  92. Editor: marked text with bold, italic, and list lines,
+      and a button that appends a line
+  93. Images and the lightbox: a web photo at a declared size
+      that opens full screen with a caption
+  94. Colour picker: a hex value with a swatch, a palette
+      sheet, and a reset to the starting blue
+  95. Breadcrumbs: a three crumb path whose first two crumbs
+      switch a place line, the last one plain
 - About screen: what the app is, how the tutorial grows, and the
   store plan. Reached from the drawer on Home; its back chevron
   returns to Home, like the lesson screens.

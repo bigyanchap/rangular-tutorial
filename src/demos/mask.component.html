@@ -1,0 +1,5 @@
+<input label="Phone" mask="(999) 999-9999" placeholder="(555) 123-4567" [value]="phone" (change)="onPhone($event)">
+<p>Phone so far: {{ phone }}</p>
+<input label="Member code" mask="AA-9999" placeholder="AB-1234" [value]="code" (change)="onCode($event)">
+<p>Code so far: {{ code }}</p>
+<p>Type slowly, and watch the literals arrive only when the slot after them is filled.</p>

@@ -1,0 +1,19 @@
+<screen>
+  <section *ngIf="tab === 0">
+    <h3>Today</h3>
+    <p>The day screen: practice first, then the reading. This panel shows while the first item is picked.</p>
+  </section>
+  <section *ngIf="tab === 1">
+    <h3>Mail</h3>
+    <p>The mail screen. The badge on the item below says two messages are waiting, and it stays there until the class changes it.</p>
+  </section>
+  <section *ngIf="tab === 2">
+    <h3>Profile</h3>
+    <p>The profile screen: your name, your streak, your settings. Third item, third panel, same index field.</p>
+  </section>
+  <bottom-nav [index]="tab" (change)="onTab($event)">
+    <nav-item icon="home" label="Today"></nav-item>
+    <nav-item icon="mail" label="Mail" badge="2"></nav-item>
+    <nav-item icon="person" label="Profile"></nav-item>
+  </bottom-nav>
+</screen>

@@ -1,0 +1,6 @@
+<p>Long press each control to read its hint. Tap it to use it.</p>
+<button (click)="tap('Save button')" tooltip="Saves the current list">Save the list</button>
+<row title="Daily report" subtitle="One row, with a hint" (click)="tap('Report row')" tooltip="Opens the full report"></row>
+<icon-button name="share" (click)="tap('Share icon')" tooltip="Shares this lesson"></icon-button>
+<p *ngIf="lastTap">Last tap: {{ lastTap }}</p>
+<p *ngIf="!lastTap">Nothing tapped yet.</p>

@@ -1,0 +1,15 @@
+<carousel [index]="page" (change)="onPage($event)">
+  <card>
+    <h3>Breathe</h3>
+    <p>Four counts in, six counts out. The breath sets the pace for everything after it.</p>
+  </card>
+  <card>
+    <h3>Sit</h3>
+    <p>Spine easy, shoulders down. Sitting well is a skill, and it is most of the practice.</p>
+  </card>
+  <card>
+    <h3>Return</h3>
+    <p>When the mind wanders, return without scolding it. The return is the repetition that counts.</p>
+  </card>
+</carousel>
+<p>Page {{ page + 1 }} of 3. Swipe on the phone; in the preview, the dots and chevrons do the paging.</p>

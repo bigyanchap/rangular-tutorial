@@ -1,0 +1,8 @@
+<select label="City" [value]="city" (change)="onCity($event)" placeholder="Pick a city">
+  <option value="ktm">Kathmandu</option>
+  <option value="pkr">Pokhara</option>
+  <option value="bkt">Bhaktapur</option>
+</select>
+<p *ngIf="city">Selected city code: {{ city }}</p>
+<p *ngIf="!city">Nothing picked yet. The field above is showing its placeholder.</p>
+<button *ngIf="city" (click)="clear()">Clear the choice</button>

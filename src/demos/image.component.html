@@ -1,0 +1,5 @@
+<p>A river valley, fetched from the web. Tap the photo to open it full screen.</p>
+<image src="https://picsum.photos/id/1015/320/180" width="320" height="180" (click)="openPhoto()"></image>
+<lightbox [open]="photoOpen" (close)="closePhoto()" src="https://picsum.photos/id/1015/320/180">
+  <p>The river valley, full screen. The caption is the lightbox's projected child.</p>
+</lightbox>

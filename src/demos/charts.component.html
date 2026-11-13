@@ -1,0 +1,9 @@
+<label>Minutes per day, as bars</label>
+<chart type="bar" [data]="week"></chart>
+<label>The same week, as a line</label>
+<chart type="line" [data]="week"></chart>
+<label>The same week, as shares</label>
+<chart type="pie" [data]="week"></chart>
+<p>Total: {{ total }} minutes across four days.</p>
+<button (click)="addWednesday()">Add 5 minutes to Wednesday</button>
+<button variant="text" (click)="reset()">Reset the week</button>

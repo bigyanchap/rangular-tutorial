@@ -1,0 +1,9 @@
+<p>You are reading: {{ section }}</p>
+<button (click)="openNav()">Open the drawer</button>
+<drawer [open]="navOpen" (close)="closeNav()">
+  <h3>Mailbox</h3>
+  <p>Pick a section. The drawer closes and the line above follows your pick.</p>
+  <button variant="text" (click)="go('Inbox')">Inbox</button>
+  <button variant="text" (click)="go('Starred')">Starred</button>
+  <button variant="text" (click)="go('Sent')">Sent</button>
+</drawer>

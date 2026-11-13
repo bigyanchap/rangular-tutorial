@@ -1,0 +1,3 @@
+<editor [value]="notes" (change)="onNotes($event)"></editor>
+<p>The stored text is {{ notes.length }} characters long, marks included.</p>
+<button (click)="addLine()">Add an evening walk line</button>

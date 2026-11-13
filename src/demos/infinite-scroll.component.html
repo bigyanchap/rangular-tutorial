@@ -1,0 +1,6 @@
+<p>Scroll to the end of the list. The next page appends on its own.</p>
+<list (endReached)="loadMore()">
+  <row *ngFor="let a of items" [title]="a.title"></row>
+</list>
+<p *ngIf="done">That is the whole list: {{ items.length }} articles.</p>
+<button *ngIf="done" (click)="reset()">Start the list again</button>

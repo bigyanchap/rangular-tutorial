@@ -1,0 +1,14 @@
+<card *ngIf="loading">
+  <skeleton shape="circle" size="48"></skeleton>
+  <skeleton shape="line" width="160"></skeleton>
+  <skeleton shape="line"></skeleton>
+  <skeleton shape="block" height="64"></skeleton>
+</card>
+<card *ngIf="!loading">
+  <avatar text="Sarju Chapagain" size="48"></avatar>
+  <h3>Sarju Chapagain</h3>
+  <p>Practice partner. Sunrise sessions, most days.</p>
+  <p>Last session: this morning, 25 minutes.</p>
+</card>
+<button (click)="toggleLoading()">Flip the loading flag</button>
+<p>The skeleton card and the real card hold the same places: photo, name, two lines of text. That match is the whole craft of the piece.</p>

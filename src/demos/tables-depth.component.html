@@ -1,0 +1,13 @@
+<label>People, three to a page. Name and Age sort; City does not.</label>
+<table [data]="people" pageSize="3">
+  <column name="name" header="Name" sortable></column>
+  <column name="age" header="Age" sortable></column>
+  <column name="city" header="City"></column>
+</table>
+<button [disabled]="added >= 3" (click)="addPerson()">Add a person</button>
+<button [disabled]="people.length <= 3" (click)="removeLast()">Remove the last</button>
+<p>Rows in the array: {{ people.length }}. Remove rows down to three and the pager goes away: the rows fit on one page.</p>
+<label>The array itself, in its own order</label>
+<list>
+  <row *ngFor="let p of people" [title]="p.name"></row>
+</list>

@@ -1,0 +1,18 @@
+<stepper [index]="stepIndex" (change)="onStep($event)">
+  <step label="Practice">
+    <p>Pick the practice you want to schedule.</p>
+    <button (click)="pick('Morning yoga')">Morning yoga</button>
+    <button (click)="pick('Evening meditation')">Evening meditation</button>
+  </step>
+  <step label="Time">
+    <p *ngIf="practice">Practice: {{ practice }}. It sits at sunrise, before the day starts.</p>
+    <p *ngIf="!practice">No practice picked yet. Go back one step and pick one.</p>
+    <button variant="text" (click)="back()">Back</button>
+    <button (click)="next()">Continue</button>
+  </step>
+  <step label="Done">
+    <p *ngIf="practice">All set: {{ practice }} is scheduled at sunrise.</p>
+    <p *ngIf="!practice">Nothing is scheduled. Pick a practice in the first step.</p>
+    <button variant="text" (click)="back()">Back</button>
+  </step>
+</stepper>

@@ -1,0 +1,9 @@
+<empty-state *ngIf="messages.length === 0" icon="mail" title="No messages" text="When someone writes, it will land here.">
+  <button (click)="load()">Load the sample inbox</button>
+</empty-state>
+<section *ngIf="messages.length > 0">
+  <list>
+    <row *ngFor="let m of messages" [title]="m.from" [subtitle]="m.subject"></row>
+  </list>
+  <button (click)="clear()">Clear the inbox</button>
+</section>

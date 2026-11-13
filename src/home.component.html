@@ -30,8 +30,16 @@
   <list>
     <row *ngFor="let l of dataLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
   </list>
+  <label>The Material pieces: lessons 66 to 76</label>
+  <list>
+    <row *ngFor="let l of piecesLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+  </list>
+  <label>Beyond Angular: lessons 77 to 95</label>
+  <list>
+    <row *ngFor="let l of beyondLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+  </list>
   <card>
     <h3>Coming next</h3>
-    <p>The lesson batches are complete: the curriculum now covers the whole framework, from the first component to a small real app. Next come the app comforts: search across lessons, bookmarks with resume where you left off, and a try it editor for the most common lessons, then the store release.</p>
+    <p>All five lesson batches are complete: the curriculum now covers the whole framework, from the first component to a small real app, and on to the beyond Angular pieces that Angular itself leaves to you. Next come the app comforts: search across lessons, bookmarks with resume where you left off, and a try it editor for the most common lessons, then the store release.</p>
   </card>
 </section>

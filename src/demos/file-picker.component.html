@@ -1,0 +1,8 @@
+<file-picker label="Photo" kind="image" (change)="onPhoto($event)">Choose a photo</file-picker>
+<p *ngIf="photo">Picked photo: {{ photo }}</p>
+<p *ngIf="!photo">No photo picked yet. On the phone, the button opens the photo library.</p>
+<file-picker label="Documents" kind="file" multiple (change)="onDocs($event)">Choose documents</file-picker>
+<list *ngIf="docs.length > 0">
+  <row *ngFor="let f of docs" [title]="f.name"></row>
+</list>
+<p *ngIf="docs.length === 0">No documents picked yet. On the phone, the button opens the document picker.</p>

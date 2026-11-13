@@ -65,6 +65,36 @@ import { HttpStatesDemoComponent } from './demos/http-states.component';
 import { DataServiceDemoComponent } from './demos/data-service.component';
 import { CapstoneDataDemoComponent } from './demos/capstone-data.component';
 import { CapstoneDemoComponent } from './demos/capstone.component';
+import { MenuDemoComponent } from './demos/menu.component';
+import { DrawerDemoComponent } from './demos/drawer.component';
+import { SelectDemoComponent } from './demos/select.component';
+import { SelectFormDemoComponent } from './demos/select-form.component';
+import { StepperDemoComponent } from './demos/stepper.component';
+import { GridDemoComponent } from './demos/grid.component';
+import { MasonryDemoComponent } from './demos/masonry.component';
+import { TreeDemoComponent } from './demos/tree.component';
+import { TooltipDemoComponent } from './demos/tooltip.component';
+import { DividerDemoComponent } from './demos/divider.component';
+import { TablesDepthDemoComponent } from './demos/tables-depth.component';
+import { BottomNavDemoComponent } from './demos/bottom-nav.component';
+import { RefreshDemoComponent } from './demos/refresh.component';
+import { InfiniteScrollDemoComponent } from './demos/infinite-scroll.component';
+import { SkeletonDemoComponent } from './demos/skeleton.component';
+import { RowActionsDemoComponent } from './demos/row-actions.component';
+import { FilePickerDemoComponent } from './demos/file-picker.component';
+import { MaskDemoComponent } from './demos/mask.component';
+import { RatingDemoComponent } from './demos/rating.component';
+import { OtpDemoComponent } from './demos/otp.component';
+import { CarouselDemoComponent } from './demos/carousel.component';
+import { TimelineDemoComponent } from './demos/timeline.component';
+import { CalendarDemoComponent } from './demos/calendar.component';
+import { AvatarsDemoComponent } from './demos/avatars.component';
+import { EmptyStateDemoComponent } from './demos/empty-state.component';
+import { ChartsDemoComponent } from './demos/charts.component';
+import { EditorDemoComponent } from './demos/editor.component';
+import { ImageDemoComponent } from './demos/image.component';
+import { ColorPickerDemoComponent } from './demos/color-picker.component';
+import { BreadcrumbsDemoComponent } from './demos/breadcrumbs.component';
 
 /**
  * One lesson screen. The lesson data comes from LessonService by

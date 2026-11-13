@@ -1,0 +1,9 @@
+<p>Swipe a row to the side and tap an action. In the preview, a small reveal handle stands in for the swipe.</p>
+<list>
+  <row *ngFor="let m of mails" [title]="m.from" [subtitle]="m.subject">
+    <row-action icon="star" (click)="star(m.subject)">Star</row-action>
+    <row-action icon="delete" color="error" (click)="remove(m.subject)">Delete</row-action>
+  </row>
+</list>
+<p *ngIf="lastAction">{{ lastAction }}</p>
+<p *ngIf="mails.length === 0">The inbox is empty. Every row was deleted by its own swipe action.</p>

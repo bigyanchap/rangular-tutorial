@@ -143,6 +143,91 @@ an Observable-lite with subscribe only, and in the browser
 preview it is a stub that never answers, which lessons 61 to
 63 state plainly.
 
+## Batch 4: lessons 66 to 76 (written)
+
+The Material pieces batch: the ten pieces Stage 14 of the
+framework added, plus the grid list masonry mode and a deeper
+table lesson. Eleven lessons, one per piece.
+
+1. Menu and menu-item: actions for one thing
+2. Drawer: the navigation panel from the left
+3. Select: picking one from a list
+4. Select in a form
+5. Stepper and step: a task in steps
+6. Grid list and grid-tile: tiles in columns
+7. Grid list, masonry mode
+8. Tree and tree-node: folders that open
+9. Tooltip: a hint on long press
+10. Divider: one quiet line
+11. Tables in depth: sorting and paging
+
+All eleven lessons are written, each with a live demo component
+under `src/demos/`. The framework limits are taught honestly in
+their lessons: the menu panel hangs at the top right and does
+not anchor to its button; the drawer is the over mode only, and
+a fixed side column is a section, not a drawer; select options
+are static declarations and ngModel does not bind a select;
+the stepper has no linear mode, so gating a step is the class's
+own work; tree nodes manage their own expansion, which the
+component cannot read back and no event reports; the tooltip
+belongs on button, row, and icon-button only, and anywhere
+else warns GEN_TOOLTIP_HOST; and the table lesson proves on
+screen that sorting and paging work on a copy, because the
+bound array rendered below the table never changes its order.
+Masonry is a mode of grid list (a beyond Angular piece from
+Stage 15) taught here with the grid lessons, since it is the
+same tags and tiles.
+
+## Batch 5: lessons 77 to 95 (written)
+
+The beyond Angular batch: the pieces Stage 15 of the framework
+added, which Angular core, Material, and CDK do not provide by
+default. Nineteen lessons, one per piece, with infinite scroll
+split from pull to refresh so each event gets its own lesson.
+
+1. Bottom navigation: destinations at the thumb
+2. Pull to refresh
+3. Infinite scroll: the endReached event
+4. Skeleton: standing in for content
+5. Swipe row actions
+6. File picker: photos and documents
+7. Input masks: format while typing
+8. Rating: stars on the controls contract
+9. The OTP input: one code, digit boxes
+10. Carousel: pages you swipe
+11. Timeline: a journey on a rail
+12. Calendar: a month to look at
+13. Avatars and avatar groups
+14. Empty state: the friendly nothing
+15. Charts: one data shape, three drawings
+16. Editor: marked text, honestly
+17. Images and the lightbox
+18. Colour picker: a hex value with a swatch
+19. Breadcrumbs: where you are, as a path
+
+All nineteen lessons are written, each with a live demo
+component under `src/demos/`. The framework limits are taught
+honestly in their lessons: refresh and end-reached are events
+on the screen and list scrollers, not tags, and the refreshing
+flag is the class's job (in the preview, cues fire the events,
+because a browser page cannot pull, and dots and chevrons page
+the carousel, because it cannot swipe); a masked field's value
+is the formatted string, with no raw channel; the rating has
+no half stars; the OTP length clamps to 4 to 8; the calendar
+is a browsing month view, not a form picker, which stays the
+wheel datetime-picker's job; charts are one series with no
+axes, gridlines, animation, or interaction, and bar and pie
+treat a negative value as 0; the editor is marked text with
+helpers, not a WYSIWYG engine, and its stored value is the
+marked text; the lightbox's pinch zoom comes from the iOS
+scroll view only; and the file picker hands back file
+information (name, uri, size, type), never the bytes, opens
+through expo-image-picker and expo-document-picker on the
+phone, and in the preview the browser's own picker stands in
+with the file name as the uri. Masonry, the remaining Stage
+15 piece, was taught earlier as lesson 72 with the grid
+lessons, because it is a mode of grid list.
+
 ## After the batches
 
 - Search across lessons
