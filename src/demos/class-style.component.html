@@ -6,3 +6,7 @@
 <button (click)="show('big')">Big</button>
 <p [class.look-highlight]="highlighted">This line carries a class binding. The highlight class turns on and off with the button below.</p>
 <button (click)="toggleHighlight()">Toggle highlight</button>
+<input label="Try it: your own line, in all three looks" [(ngModel)]="ownLine">
+<p class="look-calm">{{ ownLine }}</p>
+<p class="look-alert">{{ ownLine }}</p>
+<p class="look-big">{{ ownLine }}</p>

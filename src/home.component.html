@@ -12,34 +12,57 @@
   <p>Short lessons, in order. Each lesson has a plain explanation, a Code block, and a live demo running on the same screen.</p>
   <card>
     <h3>How to use this tutorial</h3>
-    <p>Start at Lesson 1 and go in order. Tap a lesson, read it, try its demo, then come back for the next one. New lessons arrive in batches, and the list below always shows what is ready. The menu at the top left holds the About screen.</p>
+    <p>Start at Lesson 1 and go in order. Tap a lesson, read it, try its demo, then come back for the next one. Looking for one topic? Type in the search field below and tap a result. On a lesson, the bookmark button keeps it in your bookmarks on this screen, and the continue row reopens the last lesson you read.</p>
   </card>
-  <label>Getting started: lessons 1 to 5</label>
-  <list>
-    <row *ngFor="let l of starterLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
-  </list>
-  <label>Components and templates: lessons 6 to 25</label>
-  <list>
-    <row *ngFor="let l of batchLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
-  </list>
-  <label>Forms and interaction: lessons 26 to 45</label>
-  <list>
-    <row *ngFor="let l of formsLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
-  </list>
-  <label>Services, routing, and data: lessons 46 to 65</label>
-  <list>
-    <row *ngFor="let l of dataLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
-  </list>
-  <label>The Material pieces: lessons 66 to 76</label>
-  <list>
-    <row *ngFor="let l of piecesLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
-  </list>
-  <label>Beyond Angular: lessons 77 to 95</label>
-  <list>
-    <row *ngFor="let l of beyondLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
-  </list>
-  <card>
-    <h3>Coming next</h3>
-    <p>All five lesson batches are complete: the curriculum now covers the whole framework, from the first component to a small real app, and on to the beyond Angular pieces that Angular itself leaves to you. Next come the app comforts: search across lessons, bookmarks with resume where you left off, and a try it editor for the most common lessons, then the store release.</p>
-  </card>
+  <input label="Search lessons" placeholder="Try forms, pipes, or tables" [value]="query" (change)="onQuery($event)">
+  <button *ngIf="searching" variant="text" (click)="clearSearch()">Clear search</button>
+  <section *ngIf="searching">
+    <label>Search results</label>
+    <list>
+      <row *ngFor="let l of results" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+    </list>
+    <p *ngIf="results.length === 0">No lesson matches that search. Try a shorter word.</p>
+  </section>
+  <section *ngIf="!searching">
+    <section *ngIf="continueLesson">
+      <label>Continue where you left off</label>
+      <list>
+        <row [title]="continueLesson.title" [subtitle]="continueLesson.subtitle" [time]="continueLesson.minutes" [routerLink]="['/lesson', continueLesson.id]"></row>
+      </list>
+    </section>
+    <section *ngIf="bookmarkLessons.length > 0">
+      <label>Your bookmarks</label>
+      <list>
+        <row *ngFor="let l of bookmarkLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+      </list>
+    </section>
+    <label>Getting started: lessons 1 to 5</label>
+    <list>
+      <row *ngFor="let l of starterLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+    </list>
+    <label>Components and templates: lessons 6 to 25</label>
+    <list>
+      <row *ngFor="let l of batchLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+    </list>
+    <label>Forms and interaction: lessons 26 to 45</label>
+    <list>
+      <row *ngFor="let l of formsLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+    </list>
+    <label>Services, routing, and data: lessons 46 to 65</label>
+    <list>
+      <row *ngFor="let l of dataLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+    </list>
+    <label>The Material pieces: lessons 66 to 76</label>
+    <list>
+      <row *ngFor="let l of piecesLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+    </list>
+    <label>Beyond Angular: lessons 77 to 95</label>
+    <list>
+      <row *ngFor="let l of beyondLessons" [title]="l.title" [subtitle]="l.subtitle" [time]="l.minutes" [routerLink]="['/lesson', l.id]"></row>
+    </list>
+    <card>
+      <h3>Coming next</h3>
+      <p>The curriculum is complete and the app comforts are in: search across all 95 lessons, bookmarks, a continue row for your last lesson, and try it fields in the most hands on lessons. What remains is the store release. The icon, splash artwork, and store listing are prepared, and the accounts and submission are the last step.</p>
+    </card>
+  </section>
 </section>

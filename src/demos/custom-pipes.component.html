@@ -3,3 +3,5 @@
 <button (click)="add()">Add 15 minutes</button>
 <button (click)="take()" [disabled]="minutes === 0">Take 15 minutes</button>
 <button (click)="reset()">Back to 75</button>
+<label>Try it: set the minutes</label>
+<slider min="0" max="240" step="15" [value]="minutes" (change)="onMinutes($event)"></slider>

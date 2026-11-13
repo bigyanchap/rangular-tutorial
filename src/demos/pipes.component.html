@@ -4,7 +4,9 @@
 <p>Done: {{ ratio | percent:'1.0-1' }}</p>
 <p>Price: {{ price | currency:'USD' }}</p>
 <p>In rupees: {{ price | currency:'NPR' }}</p>
-<input label="A word to pipe" [(ngModel)]="word">
+<label>Try it: set the price</label>
+<slider min="0" max="200" step="5" [value]="price" (change)="onPrice($event)"></slider>
+<input label="Try it: a word to pipe" [(ngModel)]="word">
 <p>Uppercase: {{ word | uppercase }}</p>
 <p>Lowercase: {{ word | lowercase }}</p>
 <p>First three letters: {{ word | slice:0:3 }}</p>

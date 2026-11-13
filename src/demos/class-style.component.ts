@@ -9,7 +9,9 @@ import { Component } from '@angular/core';
  * (GEN_CLASS_BINDING, GEN_STYLE_BINDING) instead of staying
  * silent. For a whole look change, named classes in the
  * component styles with ngIf swapping which pre-styled line
- * shows is the pattern, and the three look lines use it.
+ * shows is the pattern, and the three look lines use it. The
+ * try it field at the end renders your own words in all three
+ * looks at once, so the classes are visible side by side.
  */
 @Component({
   selector: 'app-class-style-demo',
@@ -24,6 +26,7 @@ import { Component } from '@angular/core';
 export class ClassStyleDemoComponent {
   look = 'calm';
   highlighted = false;
+  ownLine = 'My own line';
 
   show(look: string) {
     this.look = look;

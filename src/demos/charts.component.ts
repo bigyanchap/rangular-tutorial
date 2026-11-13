@@ -6,7 +6,9 @@ import { Component } from '@angular/core';
  * a pie, all bound to the same field. Adding minutes
  * rebuilds the array by assignment, the Wednesday entry
  * carried at its new value, and every chart follows,
- * because every chart reads the same source.
+ * because every chart reads the same source. The try it
+ * slider sets Wednesday directly, and the same rebuild
+ * carries the new value into all three drawings.
  */
 @Component({
   selector: 'app-charts-demo',
@@ -20,18 +22,25 @@ export class ChartsDemoComponent {
     { label: 'Thu', value: 15 },
   ];
   total = 55;
+  wed = 9;
 
-  addWednesday() {
+  onWed(value: number) {
+    this.wed = value;
     this.week = [
       this.week[0],
       this.week[1],
-      { label: 'Wed', value: this.week[2].value + 5 },
+      { label: 'Wed', value: value },
       this.week[3],
     ];
-    this.total = this.total + 5;
+    this.total = 46 + value;
+  }
+
+  addWednesday() {
+    this.onWed(this.wed + 5);
   }
 
   reset() {
+    this.wed = 9;
     this.week = [
       { label: 'Mon', value: 12 },
       { label: 'Tue', value: 19 },

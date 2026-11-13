@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LessonService } from './lesson.service';
+import { BookmarksService } from './bookmarks.service';
 import { HelloComponent } from './demos/hello.component';
 import { InterpolationDemoComponent } from './demos/interpolation.component';
 import { EventsDemoComponent } from './demos/events.component';
@@ -100,7 +101,10 @@ import { BreadcrumbsDemoComponent } from './demos/breadcrumbs.component';
  * One lesson screen. The lesson data comes from LessonService by
  * the route's id. Each lesson's live demo is its own small
  * component under src/demos/, hosted below when the lesson has
- * one; this component holds no demo state of its own.
+ * one; this component holds no demo state of its own. Opening a
+ * lesson records it as the last lesson in the bookmarks service
+ * and reads its bookmark state, so Home can offer a continue
+ * row and the header card can offer a working bookmark toggle.
  */
 @Component({
   selector: 'app-lesson',
@@ -109,14 +113,25 @@ import { BreadcrumbsDemoComponent } from './demos/breadcrumbs.component';
 export class LessonComponent {
   lesson: any = null;
   lessonId = 0;
+  bookmarked = false;
 
   constructor(
     private route: ActivatedRoute,
     private lessonService: LessonService,
+    private bookmarks: BookmarksService,
   ) {}
 
   ngOnInit() {
     this.lesson = this.lessonService.getById(this.route.snapshot.params.id);
     this.lessonId = this.lesson === null ? 0 : this.lesson.id;
+    if (this.lessonId > 0) {
+      this.bookmarks.recordLast(this.lessonId);
+      this.bookmarked = this.bookmarks.isBookmarked(this.lessonId);
+    }
+  }
+
+  toggleBookmark() {
+    this.bookmarks.toggle(this.lessonId);
+    this.bookmarked = this.bookmarks.isBookmarked(this.lessonId);
   }
 }

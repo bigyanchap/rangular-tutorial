@@ -6,4 +6,6 @@
 <chart type="pie" [data]="week"></chart>
 <p>Total: {{ total }} minutes across four days.</p>
 <button (click)="addWednesday()">Add 5 minutes to Wednesday</button>
+<label>Try it: Wednesday minutes</label>
+<slider min="0" max="60" step="1" [value]="wed" (change)="onWed($event)"></slider>
 <button variant="text" (click)="reset()">Reset the week</button>

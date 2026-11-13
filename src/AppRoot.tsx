@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { RgAccordion, RgActions, RgAppbar, RgAvatar, RgAvatarGroup, RgBottomNav, RgBreadcrumbs, RgButton, RgCalendar, RgCard, RgCarousel, RgChart, RgCheckbox, RgChip, RgChips, RgCode, RgColorPicker, RgColumn, RgCrumb, RgDateTimePicker, RgDialog, RgDivider, RgDrawer, RgEditor, RgEmptyState, RgFilePicker, RgGridList, RgGridTile, RgIcon, RgIconButton, RgImage, RgInput, RgLightbox, RgList, RgMenu, RgMenuItem, RgNavItem, RgOption, RgOtp, RgOutlet, RgPanel, RgProgressBar, RgRadio, RgRadioGroup, RgRating, RgRow, RgRowAction, RgScreen, RgSection, RgSelect, RgSheet, RgSkeleton, RgSlider, RgSnackbar, RgSpinner, RgStep, RgStepper, RgSwitch, RgSwitcher, RgTab, RgTable, RgTabs, RgText, RgTimeline, RgTimelineItem, RgTree, RgTreeNode } from '@rangular/ui';
 import { ActivatedRoute, Container, FormControl, FormGroup, HttpClient, ReactiveService, RgNavigator, Router, SnackBar, Validators, pipe, validateValue } from '@rangular/runtime';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export class LessonService extends ReactiveService {
   lessons = [
@@ -868,6 +869,45 @@ export class LessonService extends ReactiveService {
   }
 }
 
+export class BookmarksService extends ReactiveService {
+  bookmarkIds: number[] = [];
+  lastLessonId = 0;
+  storageKey = 'rangular-tutorial.progress.v1';
+  constructor() {
+    super();
+    AsyncStorage.getItem(this.storageKey).then((raw) => {
+  if (raw) {
+    const saved = JSON.parse(raw);
+    this.bookmarkIds = saved.bookmarkIds;
+    this.__notify();
+    this.lastLessonId = saved.lastLessonId;
+    this.__notify();
+  }
+});
+  }
+  save() {
+    AsyncStorage.setItem(this.storageKey, JSON.stringify({ bookmarkIds: this.bookmarkIds, lastLessonId: this.lastLessonId }));
+  }
+  recordLast(id: number) {
+    this.lastLessonId = id;
+    this.__notify();
+    this.save();
+  }
+  isBookmarked(id: number) {
+    return this.bookmarkIds.indexOf(id) >= 0;
+  }
+  toggle(id: number) {
+    if (this.isBookmarked(id)) {
+      this.bookmarkIds = this.bookmarkIds.filter((x) => x !== id);
+      this.__notify();
+    } else {
+      this.bookmarkIds = [...this.bookmarkIds, id];
+      this.__notify();
+    }
+    this.save();
+  }
+}
+
 export class LifecycleLogService extends ReactiveService {
   entries: string[] = [];
 }
@@ -1046,6 +1086,7 @@ const __pipeDurationPipe = new DurationPipe();
 
 const __container = new Container();
 __container.register(LessonService, new LessonService());
+__container.register(BookmarksService, new BookmarksService());
 __container.register(LifecycleLogService, new LifecycleLogService());
 __container.register(QuoteService, new QuoteService());
 __container.register(TallyService, new TallyService());
@@ -1088,7 +1129,14 @@ export function Splash() {
 export function Home() {
   const lessons = __container.get<LessonService>(LessonService);
   useSyncExternalStore((cb) => lessons.__subscribe(cb), () => lessons.__getVersion());
+  const bookmarks = __container.get<BookmarksService>(BookmarksService);
+  useSyncExternalStore((cb) => bookmarks.__subscribe(cb), () => bookmarks.__getVersion());
   const [menuOpen, setMenuOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [searching, setSearching] = useState(false);
+  const [results, setResults] = useState([]);
+  const [continueLesson, setContinueLesson] = useState(null);
+  const [bookmarkLessons, setBookmarkLessons] = useState([]);
   const [starterLessons, setStarterLessons] = useState([]);
   const [batchLessons, setBatchLessons] = useState([]);
   const [formsLessons, setFormsLessons] = useState([]);
@@ -1102,6 +1150,24 @@ export function Home() {
     setDataLessons(lessons.lessons.filter((l: Lesson) => l.id >= 46 && l.id <= 65));
     setPiecesLessons(lessons.lessons.filter((l: Lesson) => l.id >= 66 && l.id <= 76));
     setBeyondLessons(lessons.lessons.filter((l: Lesson) => l.id >= 77));
+    if (bookmarks.lastLessonId > 0) {
+      const found = lessons.lessons.find((l: Lesson) => l.id === bookmarks.lastLessonId);
+      setContinueLesson((found === undefined ? null : found));
+    }
+    setBookmarkLessons(lessons.lessons.filter((l: Lesson) => bookmarks.isBookmarked(l.id)));
+  };
+  const onQuery = (text: string) => {
+    setQuery(text);
+    const q = text.trim().toLowerCase();
+    setSearching(q.length > 0);
+    if (searching) {
+      setResults(lessons.lessons.filter((l: Lesson) => l.title.toLowerCase().includes(q) || l.subtitle.toLowerCase().includes(q) || l.intro.toLowerCase().includes(q)));
+    } else {
+      setResults([]);
+    }
+  };
+  const clearSearch = () => {
+    onQuery('');
   };
   const openMenu = () => {
     setMenuOpen(true);
@@ -1128,48 +1194,87 @@ export function Home() {
       <RgText variant="bodyLarge">Short lessons, in order. Each lesson has a plain explanation, a Code block, and a live demo running on the same screen.</RgText>
       <RgCard>
         <RgText variant="title">How to use this tutorial</RgText>
-        <RgText variant="bodyLarge">Start at Lesson 1 and go in order. Tap a lesson, read it, try its demo, then come back for the next one. New lessons arrive in batches, and the list below always shows what is ready. The menu at the top left holds the About screen.</RgText>
+        <RgText variant="bodyLarge">Start at Lesson 1 and go in order. Tap a lesson, read it, try its demo, then come back for the next one. Looking for one topic? Type in the search field below and tap a result. On a lesson, the bookmark button keeps it in your bookmarks on this screen, and the continue row reopens the last lesson you read.</RgText>
       </RgCard>
-      <RgText variant="label">Getting started: lessons 1 to 5</RgText>
-      <RgList>
-        {starterLessons.map((l, index) => (
-          <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
-        ))}
-      </RgList>
-      <RgText variant="label">Components and templates: lessons 6 to 25</RgText>
-      <RgList>
-        {batchLessons.map((l, index) => (
-          <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
-        ))}
-      </RgList>
-      <RgText variant="label">Forms and interaction: lessons 26 to 45</RgText>
-      <RgList>
-        {formsLessons.map((l, index) => (
-          <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
-        ))}
-      </RgList>
-      <RgText variant="label">Services, routing, and data: lessons 46 to 65</RgText>
-      <RgList>
-        {dataLessons.map((l, index) => (
-          <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
-        ))}
-      </RgList>
-      <RgText variant="label">The Material pieces: lessons 66 to 76</RgText>
-      <RgList>
-        {piecesLessons.map((l, index) => (
-          <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
-        ))}
-      </RgList>
-      <RgText variant="label">Beyond Angular: lessons 77 to 95</RgText>
-      <RgList>
-        {beyondLessons.map((l, index) => (
-          <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
-        ))}
-      </RgList>
-      <RgCard>
-        <RgText variant="title">Coming next</RgText>
-        <RgText variant="bodyLarge">All five lesson batches are complete: the curriculum now covers the whole framework, from the first component to a small real app, and on to the beyond Angular pieces that Angular itself leaves to you. Next come the app comforts: search across lessons, bookmarks with resume where you left off, and a try it editor for the most common lessons, then the store release.</RgText>
-      </RgCard>
+      <RgInput label="Search lessons" placeholder="Try forms, pipes, or tables" onChangeText={($event) => onQuery($event)} value={query} />
+      {searching && (
+        <RgButton variant="text" onPress={() => clearSearch()}>Clear search</RgButton>
+      )}
+      {searching && (
+        <RgSection>
+          <RgText variant="label">Search results</RgText>
+          <RgList>
+            {results.map((l, index) => (
+              <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+            ))}
+          </RgList>
+          {(results.length === 0) && (
+            <RgText variant="bodyLarge">No lesson matches that search. Try a shorter word.</RgText>
+          )}
+        </RgSection>
+      )}
+      {!searching && (
+        <RgSection>
+          {continueLesson && (
+            <RgSection>
+              <RgText variant="label">Continue where you left off</RgText>
+              <RgList>
+                <RgRow title={continueLesson.title} subtitle={continueLesson.subtitle} time={continueLesson.minutes} onPress={() => __router.navigate(['/lesson', continueLesson.id])} />
+              </RgList>
+            </RgSection>
+          )}
+          {(bookmarkLessons.length > 0) && (
+            <RgSection>
+              <RgText variant="label">Your bookmarks</RgText>
+              <RgList>
+                {bookmarkLessons.map((l, index) => (
+                  <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+                ))}
+              </RgList>
+            </RgSection>
+          )}
+          <RgText variant="label">Getting started: lessons 1 to 5</RgText>
+          <RgList>
+            {starterLessons.map((l, index) => (
+              <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+            ))}
+          </RgList>
+          <RgText variant="label">Components and templates: lessons 6 to 25</RgText>
+          <RgList>
+            {batchLessons.map((l, index) => (
+              <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+            ))}
+          </RgList>
+          <RgText variant="label">Forms and interaction: lessons 26 to 45</RgText>
+          <RgList>
+            {formsLessons.map((l, index) => (
+              <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+            ))}
+          </RgList>
+          <RgText variant="label">Services, routing, and data: lessons 46 to 65</RgText>
+          <RgList>
+            {dataLessons.map((l, index) => (
+              <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+            ))}
+          </RgList>
+          <RgText variant="label">The Material pieces: lessons 66 to 76</RgText>
+          <RgList>
+            {piecesLessons.map((l, index) => (
+              <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+            ))}
+          </RgList>
+          <RgText variant="label">Beyond Angular: lessons 77 to 95</RgText>
+          <RgList>
+            {beyondLessons.map((l, index) => (
+              <RgRow key={l?.id ?? index} title={l.title} subtitle={l.subtitle} time={l.minutes} onPress={() => __router.navigate(['/lesson', l.id])} />
+            ))}
+          </RgList>
+          <RgCard>
+            <RgText variant="title">Coming next</RgText>
+            <RgText variant="bodyLarge">The curriculum is complete and the app comforts are in: search across all 95 lessons, bookmarks, a continue row for your last lesson, and try it fields in the most hands on lessons. What remains is the store release. The icon, splash artwork, and store listing are prepared, and the accounts and submission are the last step.</RgText>
+          </RgCard>
+        </RgSection>
+      )}
     </RgSection>
   );
 }
@@ -1178,11 +1283,22 @@ export function Lesson({ __rgRoute }: { __rgRoute?: any }) {
   const route = __rgRoute;
   const lessonService = __container.get<LessonService>(LessonService);
   useSyncExternalStore((cb) => lessonService.__subscribe(cb), () => lessonService.__getVersion());
+  const bookmarks = __container.get<BookmarksService>(BookmarksService);
+  useSyncExternalStore((cb) => bookmarks.__subscribe(cb), () => bookmarks.__getVersion());
   const [lesson, setLesson] = useState(null);
   const [lessonId, setLessonId] = useState(0);
+  const [bookmarked, setBookmarked] = useState(false);
   const ngOnInit = () => {
     setLesson(lessonService.getById(route.snapshot.params.id));
     setLessonId((lesson === null ? 0 : lesson.id));
+    if (lessonId > 0) {
+      bookmarks.recordLast(lessonId);
+      setBookmarked(bookmarks.isBookmarked(lessonId));
+    }
+  };
+  const toggleBookmark = () => {
+    bookmarks.toggle(lessonId);
+    setBookmarked(bookmarks.isBookmarked(lessonId));
   };
   useEffect(() => {
     ngOnInit();
@@ -1196,6 +1312,7 @@ export function Lesson({ __rgRoute }: { __rgRoute?: any }) {
           <RgText variant="label">Lesson {lesson.id}</RgText>
           <RgText variant="heading">{lesson.title}</RgText>
           <RgText variant="bodyLarge">{lesson.intro}</RgText>
+          <RgButton onPress={() => toggleBookmark()}>{(bookmarked ? 'Bookmarked: tap to remove' : 'Bookmark this lesson')}</RgButton>
         </RgCard>
       )}
       {!lesson && (
@@ -1794,7 +1911,7 @@ export function InterpolationDemo() {
   const [name, setName] = useState('Bigyan');
   return (
     <>
-      <RgInput label="Type your name" placeholder="Your name" value={name} onChangeText={($event) => setName($event)} />
+      <RgInput label="Try it: type your name" placeholder="Your name" value={name} onChangeText={($event) => setName($event)} />
       <RgText variant="title">Hello, {name}</RgText>
       <RgText variant="bodyLarge">Every letter you type lands in the name field, and the greeting shows that field with interpolation, so it mirrors your typing as you type.</RgText>
     </>
@@ -1907,6 +2024,7 @@ export function NgifDemo() {
 export function ClassStyleDemo() {
   const [look, setLook] = useState('calm');
   const [highlighted, setHighlighted] = useState(false);
+  const [ownLine, setOwnLine] = useState('My own line');
   const show = (look: string) => {
     setLook(look);
   };
@@ -1929,6 +2047,10 @@ export function ClassStyleDemo() {
       <RgButton onPress={() => show('big')}>Big</RgButton>
       <RgText variant="bodyLarge" style={highlighted ? styles.classStyleDemoLookHighlight : undefined}>This line carries a class binding. The highlight class turns on and off with the button below.</RgText>
       <RgButton onPress={() => toggleHighlight()}>Toggle highlight</RgButton>
+      <RgInput label="Try it: your own line, in all three looks" value={ownLine} onChangeText={($event) => setOwnLine($event)} />
+      <RgText variant="bodyLarge" style={styles.classStyleDemoLookCalm}>{ownLine}</RgText>
+      <RgText variant="bodyLarge" style={styles.classStyleDemoLookAlert}>{ownLine}</RgText>
+      <RgText variant="bodyLarge" style={styles.classStyleDemoLookBig}>{ownLine}</RgText>
     </>
   );
 }
@@ -2123,8 +2245,11 @@ export function PipesDemo() {
   const day = '2026-11-13T07:30:00';
   const amount = 1234567.891;
   const ratio = 0.756;
-  const price = 49.5;
+  const [price, setPrice] = useState(49.5);
   const [word, setWord] = useState('rangular');
+  const onPrice = (value: number) => {
+    setPrice(value);
+  };
   return (
     <>
       <RgText variant="bodyLarge">Short date: {pipe('date', day, 'shortDate')}</RgText>
@@ -2133,7 +2258,9 @@ export function PipesDemo() {
       <RgText variant="bodyLarge">Done: {pipe('percent', ratio, '1.0-1')}</RgText>
       <RgText variant="bodyLarge">Price: {pipe('currency', price, 'USD')}</RgText>
       <RgText variant="bodyLarge">In rupees: {pipe('currency', price, 'NPR')}</RgText>
-      <RgInput label="A word to pipe" value={word} onChangeText={($event) => setWord($event)} />
+      <RgText variant="label">Try it: set the price</RgText>
+      <RgSlider min={0} max={200} step={5} value={price} onChange={($event) => onPrice($event)} />
+      <RgInput label="Try it: a word to pipe" value={word} onChangeText={($event) => setWord($event)} />
       <RgText variant="bodyLarge">Uppercase: {pipe('uppercase', word)}</RgText>
       <RgText variant="bodyLarge">Lowercase: {pipe('lowercase', word)}</RgText>
       <RgText variant="bodyLarge">First three letters: {pipe('slice', word, 0, 3)}</RgText>
@@ -2152,6 +2279,9 @@ export function CustomPipesDemo() {
   const reset = () => {
     setMinutes(75);
   };
+  const onMinutes = (value: number) => {
+    setMinutes(value);
+  };
   return (
     <>
       <RgText variant="bodyLarge">The raw field: {minutes} minutes</RgText>
@@ -2159,6 +2289,8 @@ export function CustomPipesDemo() {
       <RgButton onPress={() => add()}>Add 15 minutes</RgButton>
       <RgButton disabled={(minutes === 0)} onPress={() => take()}>Take 15 minutes</RgButton>
       <RgButton onPress={() => reset()}>Back to 75</RgButton>
+      <RgText variant="label">Try it: set the minutes</RgText>
+      <RgSlider min={0} max={240} step={15} value={minutes} onChange={($event) => onMinutes($event)} />
     </>
   );
 }
@@ -2442,6 +2574,7 @@ export function ChipsDemo() {
 export function ThemingDemo() {
   const [mode, setMode] = useState('light');
   const [taps, setTaps] = useState(0);
+  const [panelLine, setPanelLine] = useState('A themed panel');
   const onMode = (value: string) => {
     setMode(value);
   };
@@ -2450,13 +2583,14 @@ export function ThemingDemo() {
   };
   return (
     <>
+      <RgInput label="Try it: the panel heading" value={panelLine} onChangeText={($event) => setPanelLine($event)} />
       <RgSwitcher value={mode} onChange={($event) => onMode($event)}>
         <RgOption value="light">Light</RgOption>
         <RgOption value="dark">Dark</RgOption>
       </RgSwitcher>
       <RgScreen theme={mode}>
         <RgCard>
-          <RgText variant="title">A themed panel</RgText>
+          <RgText variant="title">{panelLine}</RgText>
           <RgText variant="bodyLarge">This card, this text, and the button all read their colours from token roles, so the one theme attribute re-skins them together.</RgText>
           <RgButton onPress={() => tap()}>Tap inside the theme</RgButton>
           {(taps > 0) && (
@@ -4339,6 +4473,8 @@ export function RatingDemo() {
       {!score && (
         <RgText variant="bodyLarge">No rating yet. Tap a star.</RgText>
       )}
+      <RgText variant="label">Try it: set the stars from a value</RgText>
+      <RgSlider min={0} max={5} step={1} value={score} onChange={($event) => onScore($event)} />
     </>
   );
 }
@@ -4483,11 +4619,17 @@ export function ChartsDemo() {
     { label: 'Thu', value: 15 },
   ]);
   const [total, setTotal] = useState(55);
+  const [wed, setWed] = useState(9);
+  const onWed = (value: number) => {
+    setWed(value);
+    setWeek([week[0], week[1], { label: 'Wed', value: value }, week[3]]);
+    setTotal(46 + value);
+  };
   const addWednesday = () => {
-    setWeek([week[0], week[1], { label: 'Wed', value: week[2].value + 5 }, week[3]]);
-    setTotal(total + 5);
+    onWed(wed + 5);
   };
   const reset = () => {
+    setWed(9);
     setWeek([{ label: 'Mon', value: 12 }, { label: 'Tue', value: 19 }, { label: 'Wed', value: 9 }, { label: 'Thu', value: 15 }]);
     setTotal(55);
   };
@@ -4501,6 +4643,8 @@ export function ChartsDemo() {
       <RgChart type="pie" data={week} />
       <RgText variant="bodyLarge">Total: {total} minutes across four days.</RgText>
       <RgButton onPress={() => addWednesday()}>Add 5 minutes to Wednesday</RgButton>
+      <RgText variant="label">Try it: Wednesday minutes</RgText>
+      <RgSlider min={0} max={60} step={1} value={wed} onChange={($event) => onWed($event)} />
       <RgButton variant="text" onPress={() => reset()}>Reset the week</RgButton>
     </>
   );
@@ -4593,8 +4737,12 @@ export function About() {
         <RgText variant="bodyLarge">Lessons follow the official Angular documentation, topic by topic. Each topic gets its Rangular equivalent: a short explanation, a Code block, a live demo, and a best practice. Lessons are added in batches of about twenty, and each batch is checked on a real phone before the next one starts.</RgText>
       </RgCard>
       <RgCard>
+        <RgText variant="title">Bookmarks and your place</RgText>
+        <RgText variant="bodyLarge">Your bookmarks and the continue row on Home are saved on this device only. Nothing is sent anywhere. They keep across restarts, so the lesson you were reading is still your place when you come back.</RgText>
+      </RgCard>
+      <RgCard>
         <RgText variant="title">Made for the stores</RgText>
-        <RgText variant="bodyLarge">This app is being prepared for release on the App Store and Google Play. This first build is the foundation: the splash screen, the lesson engine, and the first five lessons, ready to run in Expo Go.</RgText>
+        <RgText variant="bodyLarge">This app is being prepared for release on the App Store and Google Play. All 95 lessons are complete, and the icon, splash artwork, and store listing are prepared. The store accounts and the submission itself are the remaining steps.</RgText>
       </RgCard>
     </RgSection>
   );

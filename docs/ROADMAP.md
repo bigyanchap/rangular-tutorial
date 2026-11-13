@@ -228,10 +228,48 @@ with the file name as the uri. Masonry, the remaining Stage
 15 piece, was taught earlier as lesson 72 with the grid
 lessons, because it is a mode of grid list.
 
-## After the batches
+## After the batches (done, in one finishing pass)
 
-- Search across lessons
-- Bookmarks and resume where you left off
-- A try it editor pattern for the most common lessons
-- Store release: icons, splash artwork, screenshots, and listings
-  (see docs/PUBLISHING.md)
+The four items below were finished together in one pass, at
+Bigyan's order, rather than in further batches.
+
+- Search across lessons: done. Home has a search field; typing
+  filters all 95 lessons by title, subtitle, and intro text,
+  in the class, and the result rows open their lessons.
+  Clearing the search restores the groups.
+- Bookmarks and resume where you left off: done. A root
+  bookmarks service holds the bookmarked lesson ids and the
+  last opened lesson; the lesson screen records its lesson
+  on open and carries a bookmark toggle in its header card;
+  Home shows a continue row when a last lesson exists and a
+  bookmarks group when at least one bookmark exists. The
+  state is saved on the device with AsyncStorage, so it
+  keeps across restarts and nothing leaves the device.
+  Getting there found a real framework gap, since fixed in
+  the Rangular repo: codegen silently dropped third-party
+  imports while emitting their uses, so a storage import
+  vanished and the generated code would have called a name
+  that is never imported. The compiler now carries those
+  imports (and diagnoses the forms it cannot carry), which
+  is what this service relies on. Await is still outside
+  the method translation subset (METHOD_UNSUPPORTED), so
+  the service uses the promise (.then) form throughout.
+- A try it editor pattern for the most common lessons: done
+  for seven lessons. Each carries a field labelled Try it,
+  prefilled with the demo's starting value, driving the demo
+  live: lesson 3 (interpolation, the name field), lesson 8
+  (class and style, your own line in all three looks),
+  lesson 15 (built in pipes, a price slider for the currency
+  pipes and the word box), lesson 16 (custom pipes, a minutes
+  slider), lesson 25 (theming, the panel heading), lesson 84
+  (rating, a slider that sets the stars from a value), and
+  lesson 91 (charts, a Wednesday minutes slider). The form
+  and mask demos were already try it in effect and were left
+  as they are.
+- Store release: prepared as far as it goes without Bigyan's
+  accounts. Icon, adaptive icon, and splash artwork are drawn
+  and wired in app.json (see assets/), and the listing is
+  drafted in docs/STORE_LISTING.md. Still needed from Bigyan:
+  an EAS account and project link, an Apple Developer account,
+  a Google Play Console account, real device screenshots, and
+  the submission. See docs/PUBLISHING.md.

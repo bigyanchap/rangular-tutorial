@@ -5,6 +5,7 @@
     <label>Lesson {{ lesson.id }}</label>
     <h2>{{ lesson.title }}</h2>
     <p>{{ lesson.intro }}</p>
+    <button (click)="toggleBookmark()">{{ bookmarked ? 'Bookmarked: tap to remove' : 'Bookmark this lesson' }}</button>
   </card>
   <p *ngIf="!lesson">This lesson could not be found.</p>
   <section *ngIf="lesson">

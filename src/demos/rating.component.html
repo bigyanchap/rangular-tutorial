@@ -2,3 +2,5 @@
 <rating [value]="score" (change)="onScore($event)"></rating>
 <p *ngIf="score">You rated it {{ score }} of 5: {{ verdict }}.</p>
 <p *ngIf="!score">No rating yet. Tap a star.</p>
+<label>Try it: set the stars from a value</label>
+<slider min="0" max="5" step="1" [value]="score" (change)="onScore($event)"></slider>
