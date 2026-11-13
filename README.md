@@ -9,7 +9,7 @@ components in TypeScript with HTML templates, the Angular way, and
 Rangular compiles them into React Native code that runs on iOS and
 Android.
 
-This app is built with Rangular itself. Every screen, starting with the
+This app is built with the Rangular framework itself. Every screen, starting with the
 splash screen, began as Angular style source in `src/` and was compiled
 into `src/AppRoot.tsx`. The tutorial is also the test: if Rangular has a
 gap, this app will find it.
