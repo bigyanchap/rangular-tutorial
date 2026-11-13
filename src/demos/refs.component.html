@@ -1,0 +1,5 @@
+<input label="Your name" placeholder="Type at least 3 characters" [(ngModel)]="name" #nameField="ngModel" required minlength="3">
+<p>Valid: {{ nameField.valid ? 'yes' : 'no' }}</p>
+<p>Touched: {{ nameField.touched ? 'yes' : 'no' }}</p>
+<p *ngIf="nameField.invalid && nameField.touched">The name is required and needs at least 3 characters.</p>
+<p *ngIf="nameField.valid">The ref says the name is good.</p>

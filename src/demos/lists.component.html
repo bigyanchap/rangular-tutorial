@@ -1,0 +1,8 @@
+<list>
+  <row *ngFor="let item of items; let i = index" [title]="item" [detail]="'Item ' + (i + 1)"></row>
+</list>
+<p *ngIf="items.length === 0">The list is empty. ngFor over an empty array renders nothing.</p>
+<p>{{ items.length }} items in the array, {{ items.length }} rows on screen.</p>
+<button (click)="add()">Add an item</button>
+<button (click)="removeLast()" [disabled]="items.length === 0">Remove the last</button>
+<button (click)="clear()" [disabled]="items.length === 0">Clear the list</button>

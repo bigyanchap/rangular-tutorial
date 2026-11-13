@@ -1,0 +1,19 @@
+<switcher [value]="view" (change)="onView($event)">
+  <option value="list">List</option>
+  <option value="stats">Statistics</option>
+</switcher>
+<section *ngIf="view === 'list'">
+  <p>List view: Morning Yoga, Puja, Deep Work.</p>
+</section>
+<section *ngIf="view === 'stats'">
+  <p>Statistics view: 3 blocks done this week.</p>
+</section>
+<label>Text size</label>
+<radio-group [value]="size" (change)="onSize($event)">
+  <radio value="s">Small</radio>
+  <radio value="m">Medium</radio>
+  <radio value="l">Large</radio>
+</radio-group>
+<p class="sample-s" *ngIf="size === 's'">A line of text at the chosen size.</p>
+<p class="sample-m" *ngIf="size === 'm'">A line of text at the chosen size.</p>
+<p class="sample-l" *ngIf="size === 'l'">A line of text at the chosen size.</p>

@@ -1,0 +1,3 @@
+<app-quote-card *ngFor="let q of quotes" [quote]="q" (saved)="recordSave($event)"></app-quote-card>
+<p>Saved {{ saveCount }} times</p>
+<p *ngIf="lastSaved">Last saved: {{ lastSaved }}</p>

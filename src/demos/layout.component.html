@@ -1,0 +1,11 @@
+<card>
+  <h3>The morning brief</h3>
+  <p>Three messages are waiting. The button below clears their badge.</p>
+  <button [badge]="unread" (click)="markAllRead()">Mark all read</button>
+</card>
+<list>
+  <row avatar title="Sarju" subtitle="Photos from the weekend" time="9:12"></row>
+  <row title="Inbox" subtitle="Your mail at a glance" [badge]="unread"></row>
+  <row title="Reading" subtitle="This week in your library" detail="2 min"></row>
+  <row title="System" subtitle="Theme tokens"><span class="pill">{{ unread }} unread</span></row>
+</list>

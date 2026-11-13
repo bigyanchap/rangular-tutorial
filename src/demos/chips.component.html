@@ -1,0 +1,18 @@
+<label>Filters</label>
+<chips>
+  <chip icon="star">Starred only</chip>
+  <chip *ngFor="let f of filters" removable (remove)="removeFilter(f)">{{ f }}</chip>
+</chips>
+<p *ngIf="filters.length === 0">All removable filters are gone.</p>
+<label>Mail</label>
+<row title="Inbox" subtitle="Your mail at a glance" [badge]="unread"></row>
+<button [badge]="unread" (click)="markAllRead()">Mark all read</button>
+<label>Storage: {{ storageUsed }}%</label>
+<progress-bar [value]="storageUsed"></progress-bar>
+<button (click)="less()" [disabled]="storageUsed === 0">Use 10 less</button>
+<button (click)="more()" [disabled]="storageUsed === 100">Use 10 more</button>
+<switch [checked]="syncing" (change)="onSync($event)">Syncing</switch>
+<section *ngIf="syncing">
+  <spinner></spinner>
+  <p>Syncing now. While the work has no number, a spinner speaks.</p>
+</section>

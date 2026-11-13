@@ -27,6 +27,86 @@
     <label>Live demo: property binding and ngIf</label>
     <app-bindings-demo></app-bindings-demo>
   </card>
+  <card *ngIf="lessonId === 6">
+    <label>Live demo: ngFor and lists</label>
+    <app-lists-demo></app-lists-demo>
+  </card>
+  <card *ngIf="lessonId === 7">
+    <label>Live demo: ngIf in depth</label>
+    <app-ngif-demo></app-ngif-demo>
+  </card>
+  <card *ngIf="lessonId === 8">
+    <label>Live demo: class and style bindings</label>
+    <app-class-style-demo></app-class-style-demo>
+  </card>
+  <card *ngIf="lessonId === 9">
+    <label>Live demo: child components</label>
+    <app-child-demo></app-child-demo>
+  </card>
+  <card *ngIf="lessonId === 10">
+    <label>Live demo: inputs</label>
+    <app-inputs-demo></app-inputs-demo>
+  </card>
+  <card *ngIf="lessonId === 11">
+    <label>Live demo: outputs and EventEmitter</label>
+    <app-outputs-demo></app-outputs-demo>
+  </card>
+  <card *ngIf="lessonId === 12">
+    <label>Live demo: component lifecycle</label>
+    <app-lifecycle-demo></app-lifecycle-demo>
+  </card>
+  <card *ngIf="lessonId === 13">
+    <label>Live demo: content projection</label>
+    <app-projection-demo></app-projection-demo>
+  </card>
+  <card *ngIf="lessonId === 14">
+    <label>Live demo: template reference variables</label>
+    <app-refs-demo></app-refs-demo>
+  </card>
+  <card *ngIf="lessonId === 15">
+    <label>Live demo: built in pipes</label>
+    <app-pipes-demo></app-pipes-demo>
+  </card>
+  <card *ngIf="lessonId === 16">
+    <label>Live demo: custom pipes</label>
+    <app-custom-pipes-demo></app-custom-pipes-demo>
+  </card>
+  <card *ngIf="lessonId === 17">
+    <label>Live demo: attribute directives</label>
+    <app-directives-demo></app-directives-demo>
+  </card>
+  <card *ngIf="lessonId === 18">
+    <label>Live demo: switch and checkbox</label>
+    <app-switch-checkbox-demo></app-switch-checkbox-demo>
+  </card>
+  <card *ngIf="lessonId === 19">
+    <label>Live demo: radio groups and switchers</label>
+    <app-radio-switcher-demo></app-radio-switcher-demo>
+  </card>
+  <card *ngIf="lessonId === 20">
+    <label>Live demo: icons</label>
+    <app-icons-demo></app-icons-demo>
+  </card>
+  <card *ngIf="lessonId === 21">
+    <label>Live demo: cards, lists, and rows</label>
+    <app-layout-demo></app-layout-demo>
+  </card>
+  <card *ngIf="lessonId === 22">
+    <label>Live demo: tabs and accordion</label>
+    <app-tabs-demo></app-tabs-demo>
+  </card>
+  <card *ngIf="lessonId === 23">
+    <label>Live demo: tables and data display</label>
+    <app-tables-demo></app-tables-demo>
+  </card>
+  <card *ngIf="lessonId === 24">
+    <label>Live demo: chips, badges, and progress</label>
+    <app-chips-demo></app-chips-demo>
+  </card>
+  <card *ngIf="lessonId === 25">
+    <label>Live demo: theming with design tokens</label>
+    <app-theming-demo></app-theming-demo>
+  </card>
   <section *ngIf="lesson">
     <label>Best practice</label>
     <p>{{ lesson.tip }}</p>

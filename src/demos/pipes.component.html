@@ -1,0 +1,10 @@
+<p>Short date: {{ day | date:'shortDate' }}</p>
+<p>Full stamp: {{ day | date:'yyyy-MM-dd HH:mm' }}</p>
+<p>Amount: {{ amount | number:'1.2-2' }}</p>
+<p>Done: {{ ratio | percent:'1.0-1' }}</p>
+<p>Price: {{ price | currency:'USD' }}</p>
+<p>In rupees: {{ price | currency:'NPR' }}</p>
+<input label="A word to pipe" [(ngModel)]="word">
+<p>Uppercase: {{ word | uppercase }}</p>
+<p>Lowercase: {{ word | lowercase }}</p>
+<p>First three letters: {{ word | slice:0:3 }}</p>

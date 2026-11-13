@@ -1,0 +1,10 @@
+<label>People, two to a page, both columns sortable</label>
+<table [data]="people" pageSize="2">
+  <column name="name" header="Name" sortable></column>
+  <column name="age" header="Age" sortable></column>
+</table>
+<label>An empty table</label>
+<table [data]="nobody" emptyText="No one is scheduled yet">
+  <column name="name" header="Name"></column>
+  <column name="age" header="Age"></column>
+</table>

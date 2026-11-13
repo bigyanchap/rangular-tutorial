@@ -1,0 +1,10 @@
+<app-panel>
+  <h3>First panel</h3>
+  <p>This heading and line were written in the parent and projected into the panel card.</p>
+</app-panel>
+<app-panel>
+  <h3>Second panel</h3>
+  <p>Same frame, different filling. The button below is projected too.</p>
+  <button (click)="note()">Note it</button>
+</app-panel>
+<p *ngIf="noted > 0">Noted {{ noted }} times, by a parent method.</p>

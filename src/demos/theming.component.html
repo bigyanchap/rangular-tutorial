@@ -1,0 +1,12 @@
+<switcher [value]="mode" (change)="onMode($event)">
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+</switcher>
+<screen [theme]="mode">
+  <card>
+    <h3>A themed panel</h3>
+    <p>This card, this text, and the button all read their colours from token roles, so the one theme attribute re-skins them together.</p>
+    <button (click)="tap()">Tap inside the theme</button>
+    <p *ngIf="taps > 0">Tapped {{ taps }} times</p>
+  </card>
+</screen>

@@ -1,0 +1,21 @@
+<tabs [index]="tabIndex" (change)="onTab($event)">
+  <tab label="Inbox">
+    <list>
+      <row *ngFor="let m of inboxMails" [title]="m.from" [subtitle]="m.subject"></row>
+    </list>
+  </tab>
+  <tab label="Starred">
+    <list>
+      <row *ngFor="let m of starredMails" [title]="m.from" [subtitle]="m.subject"></row>
+    </list>
+  </tab>
+</tabs>
+<p>Open tab index: {{ tabIndex }}</p>
+<accordion>
+  <panel title="Storage" subtitle="82% of 15 GB used" [expanded]="true">
+    <p>Photos and mail attachments take most of the room.</p>
+  </panel>
+  <panel title="Sync" subtitle="Last synced this morning">
+    <p>Sync runs when the app opens and again every hour.</p>
+  </panel>
+</accordion>

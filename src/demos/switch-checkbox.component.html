@@ -1,0 +1,7 @@
+<switch [checked]="wifiOn" (change)="onWifi($event)">Wi-Fi</switch>
+<p>Wi-Fi is {{ wifiOn ? 'on' : 'off' }}</p>
+<checkbox [checked]="notifications" (change)="onNotifications($event)">Notifications</checkbox>
+<p>Notifications are {{ notifications ? 'on' : 'off' }}</p>
+<checkbox [checked]="sounds" (change)="onSounds($event)">Sounds</checkbox>
+<p>Sounds are {{ sounds ? 'on' : 'off' }}</p>
+<p>{{ onCount() }} of the 3 settings are on.</p>

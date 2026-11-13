@@ -1,0 +1,10 @@
+<section *ngIf="signedIn">
+  <h3>Welcome back</h3>
+  <p>You are signed in, so this panel renders. Its opposite below does not.</p>
+</section>
+<section *ngIf="!signedIn">
+  <h3>Please sign in</h3>
+  <p>You are signed out, so this panel renders instead. Together the two panels are the else pattern.</p>
+</section>
+<button (click)="toggle()">{{ signedIn ? 'Sign out' : 'Sign in' }}</button>
+<p>Status: {{ signedIn ? 'signed in' : 'signed out' }}, chosen by a ternary.</p>

@@ -1,0 +1,5 @@
+<button (click)="toggle()">{{ show ? 'Remove the stamp' : 'Show the stamp' }}</button>
+<app-stamp *ngIf="show"></app-stamp>
+<label>The lifecycle log</label>
+<p *ngIf="log.entries.length === 0">No calls yet. Show the stamp and watch this log.</p>
+<p *ngFor="let entry of log.entries">{{ entry }}</p>

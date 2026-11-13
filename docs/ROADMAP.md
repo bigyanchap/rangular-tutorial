@@ -24,12 +24,7 @@ repo with tests.
 - Lessons 1 to 5: introduction, first component, interpolation,
   event binding, property binding and ngIf.
 
-## Batch 1: lessons 6 to 25 (next)
-
-Planned from Angular topics: components and templates. Every
-lesson follows the fixed layout and the live demo rule: a Code
-block, a demo component under `src/demos/` whenever the topic
-can be shown working, and a Best practice section.
+## Batch 1: lessons 6 to 25 (written)
 
 1. ngFor and lists
 2. ngIf in depth, with else cases stated honestly
@@ -51,6 +46,16 @@ can be shown working, and a Best practice section.
 18. Tables and data display
 19. Chips, badges, and progress
 20. Theming with design tokens, light and dark
+
+All twenty lessons are written, each with a live demo component
+under `src/demos/`. Two framework gaps were found while writing
+and are taught honestly in their lessons: ngIf else branches are
+not generated yet (GEN_NGIF_ELSE_TODO), so lesson 7 teaches the
+opposite-pair pattern; and dynamic class and style bindings
+([class], [style], [ngClass]) compile but apply nothing yet, so
+lesson 8 teaches named classes in component styles, swapped with
+ngIf. Content projection (lesson 13) teaches the single slot
+that is supported.
 
 ## Batch 2: lessons 26 to 45 (planned)
 

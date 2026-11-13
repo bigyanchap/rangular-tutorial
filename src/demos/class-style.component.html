@@ -1,0 +1,6 @@
+<p class="look-calm" *ngIf="look === 'calm'">A calm line, styled by the look-calm class.</p>
+<p class="look-alert" *ngIf="look === 'alert'">An alert line, styled by the look-alert class.</p>
+<p class="look-big" *ngIf="look === 'big'">A big line, styled by the look-big class.</p>
+<button (click)="show('calm')">Calm</button>
+<button (click)="show('alert')">Alert</button>
+<button (click)="show('big')">Big</button>

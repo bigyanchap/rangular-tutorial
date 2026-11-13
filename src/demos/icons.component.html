@@ -1,0 +1,26 @@
+<label>The set, all 27 names</label>
+<div class="icon-cell" *ngFor="let name of names">
+  <icon [name]="name"></icon>
+  <span>{{ name }}</span>
+</div>
+<label>Icons at work</label>
+<div class="icon-line">
+  <icon name="bell" color="primary"></icon>
+  <p>Notifications, in the primary role</p>
+</div>
+<div class="icon-line">
+  <icon name="search" size="20"></icon>
+  <p>Search, at size 20</p>
+</div>
+<div class="icon-line">
+  <icon name="heart" size="28" color="error"></icon>
+  <p>Favourites, at size 28 in the error role</p>
+</div>
+<label>Icon buttons</label>
+<p>One clear action each, with a 48 square touch target and no words.</p>
+<div class="icon-line">
+  <icon-button name="settings" (click)="tapIcon('settings')"></icon-button>
+  <icon-button name="share" (click)="tapIcon('share')"></icon-button>
+  <icon-button name="delete" (click)="tapIcon('delete')"></icon-button>
+</div>
+<p *ngIf="lastTap">Last tapped: {{ lastTap }}</p>

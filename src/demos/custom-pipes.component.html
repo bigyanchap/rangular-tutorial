@@ -1,0 +1,5 @@
+<p>The raw field: {{ minutes }} minutes</p>
+<h3>As a duration: {{ minutes | duration }}</h3>
+<button (click)="add()">Add 15 minutes</button>
+<button (click)="take()" [disabled]="minutes === 0">Take 15 minutes</button>
+<button (click)="reset()">Back to 75</button>

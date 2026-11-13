@@ -1,0 +1,8 @@
+<p appHighlight="yellow">A static highlight, written in the attribute.</p>
+<p [appHighlight]="colour" defaultColor="violet">A bound highlight, following the switcher.</p>
+<p>No directive on this line.</p>
+<switcher [value]="colour" (change)="onColour($event)">
+  <option value="cyan">Cyan</option>
+  <option value="yellow">Yellow</option>
+  <option value="violet">Violet</option>
+</switcher>

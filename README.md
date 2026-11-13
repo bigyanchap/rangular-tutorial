@@ -14,9 +14,9 @@ splash screen, began as Angular style source in `src/` and was compiled
 into `src/AppRoot.tsx`. The tutorial is also the test: if Rangular has a
 gap, this app will find it.
 
-This app will be published on the App Store and Google Play. This first
-build is the foundation: splash screen, lesson engine, and the first
-five lessons.
+This app will be published on the App Store and Google Play. This
+build carries the foundation: splash screen, lesson engine, and
+lessons 1 to 25.
 
 ## Run it on your Mac and phone
 
@@ -47,9 +47,9 @@ repo cloned to run the tutorial.
   framework 0.1.2). The Splash screen has no app bar, by design.
 - Splash screen: what Rangular is and what this app is, in two short
   cards, with a Start learning button.
-- Home: the lesson list for Batch 1, with a how to use card and a
-  coming next card. About lives in the menu now, not in a list on
-  Home.
+- Home: the lesson list in two groups (lessons 1 to 5, then
+  lessons 6 to 25), with a how to use card and a coming next card.
+  About lives in the menu now, not in a list on Home.
 - Lessons 1 to 5, each with the same layout: a header card with the
   explanation, a Code section showing the lesson's code in the
   framework's editor styled code block, a live demo where the topic
@@ -64,6 +64,35 @@ repo cloned to run the tutorial.
      tap shows a toast reading Button clicked!
   5. Property binding and ngIf, with a live counter and disabled
      button demo
+- Lessons 6 to 25 (Batch 1: components and templates), in the same
+  layout, each with a live demo component:
+  6. ngFor and lists: add and remove items, the rows follow the array
+  7. ngIf in depth: a sign in panel built from the opposite pair
+     (Rangular does not generate else branches yet, and the lesson
+     says so plainly)
+  8. Class and style bindings: named classes swapped with ngIf
+     (dynamic class and style bindings are not wired yet, and the
+     lesson says so plainly)
+  9. Child components: three tiles, each with its own count
+  10. Inputs: a greeting card fed by parent fields
+  11. Outputs and EventEmitter: quote cards reporting saves up
+  12. Component lifecycle: a stamp whose ngOnInit and ngOnDestroy
+      write into a visible log
+  13. Content projection: one panel frame, two parent written
+      fillings (single slot only)
+  14. Template reference variables: an ngModel ref read live
+  15. Built in pipes: date, number, percent, currency, slice, case
+  16. Custom pipes: a duration pipe over a minutes counter
+  17. Attribute directives: a highlight directive, static and bound
+  18. Switch and checkbox controls: a small settings panel
+  19. Radio groups and switchers: view toggle and text size
+  20. Icons: the full 27 name set, sizes, roles, and icon buttons
+  21. Cards, lists, and rows: a small inbox corner
+  22. Tabs and accordion: a two tab mailbox with folding panels
+  23. Tables: sortable columns, paging, and an empty table
+  24. Chips, badges, and progress: filters, counts, a storage bar,
+      and a sync spinner
+  25. Theming: a small screen bound light and dark by one switcher
 - About screen: what the app is, how the tutorial grows, and the
   store plan. Reached from the drawer on Home; its back chevron
   returns to Home, like the lesson screens.
