@@ -1,0 +1,4 @@
+<h1>{{ count }}</h1>
+<button (click)="increment()">Increment</button>
+<button (click)="decrement()" [disabled]="count === 0">Decrement</button>
+<button (click)="announce()">Show a toast</button>

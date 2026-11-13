@@ -14,14 +14,22 @@ repo with tests.
 ## Batch 0: the basic app (done)
 
 - Splash screen: what Rangular is, what this app is.
-- Lesson engine: routes, lesson service, lesson screen with live
-  demo slots.
+- App shell: a centered app bar title on every content screen,
+  a menu drawer on Home holding Home and About, and the back
+  chevron on the lesson and About screens.
+- Lesson engine: routes, lesson service, and the lesson screen in
+  its fixed layout (header card, Code block, live demo, Best
+  practice section). Each lesson's demo is its own component
+  under `src/demos/`.
 - Lessons 1 to 5: introduction, first component, interpolation,
   event binding, property binding and ngIf.
 
 ## Batch 1: lessons 6 to 25 (next)
 
-Planned from Angular topics: components and templates.
+Planned from Angular topics: components and templates. Every
+lesson follows the fixed layout and the live demo rule: a Code
+block, a demo component under `src/demos/` whenever the topic
+can be shown working, and a Best practice section.
 
 1. ngFor and lists
 2. ngIf in depth, with else cases stated honestly

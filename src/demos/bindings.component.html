@@ -1,0 +1,5 @@
+<h1>{{ count }}</h1>
+<button (click)="increment()">Increment</button>
+<button (click)="reset()" [disabled]="count === 0">Reset</button>
+<p *ngIf="count >= 5">Past five. Keep going.</p>
+<p *ngIf="count === 0">Reset is disabled while the count is zero. That is property binding at work.</p>

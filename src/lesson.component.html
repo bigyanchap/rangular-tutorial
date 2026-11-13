@@ -1,4 +1,5 @@
 <section>
+  <appbar title="Rangular Tutorial" titleAlign="center"></appbar>
   <icon-button name="chevron-left" routerLink="/home"></icon-button>
   <card *ngIf="lesson">
     <label>Lesson {{ lesson.id }}</label>
@@ -6,32 +7,28 @@
     <p>{{ lesson.intro }}</p>
   </card>
   <p *ngIf="!lesson">This lesson could not be found.</p>
-  <card *ngIf="lesson">
-    <label>Code to remember</label>
-    <p>{{ lesson.code }}</p>
+  <section *ngIf="lesson">
+    <label>Code</label>
+    <code>{{ lesson.code }}</code>
+  </section>
+  <card *ngIf="lessonId === 2">
+    <label>Live demo: your first component</label>
+    <app-hello></app-hello>
   </card>
   <card *ngIf="lessonId === 3">
     <label>Live demo: interpolation</label>
-    <h3>Hello, {{ name }}</h3>
-    <p *ngIf="greeted">The name field changed, and the screen followed on its own.</p>
-    <button (click)="changeName()">Change the name</button>
+    <app-interpolation-demo></app-interpolation-demo>
   </card>
   <card *ngIf="lessonId === 4">
     <label>Live demo: event binding</label>
-    <h1>{{ count }}</h1>
-    <button (click)="increment()">Increment</button>
-    <button (click)="decrement()" [disabled]="count === 0">Decrement</button>
+    <app-events-demo></app-events-demo>
   </card>
   <card *ngIf="lessonId === 5">
     <label>Live demo: property binding and ngIf</label>
-    <h1>{{ count }}</h1>
-    <button (click)="increment()">Increment</button>
-    <button (click)="reset()" [disabled]="count === 0">Reset</button>
-    <p *ngIf="count >= 5">Past five. Keep going.</p>
-    <p *ngIf="count === 0">Reset is disabled while the count is zero. That is property binding at work.</p>
+    <app-bindings-demo></app-bindings-demo>
   </card>
-  <card *ngIf="lesson">
-    <label>Good practice</label>
+  <section *ngIf="lesson">
+    <label>Best practice</label>
     <p>{{ lesson.tip }}</p>
-  </card>
+  </section>
 </section>

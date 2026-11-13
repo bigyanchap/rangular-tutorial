@@ -6,5 +6,15 @@ import { LessonService } from './lesson.service';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
+  menuOpen = false;
+
   constructor(private lessons: LessonService) {}
+
+  openMenu() {
+    this.menuOpen = true;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
 }

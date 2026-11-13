@@ -1,9 +1,18 @@
 <section>
+  <appbar title="Rangular Tutorial" titleAlign="center" menu (menu)="openMenu()"></appbar>
+  <drawer [open]="menuOpen" (close)="closeMenu()">
+    <h3>Rangular Tutorial</h3>
+    <list>
+      <row title="Home" subtitle="The lesson list" routerLink="/home"></row>
+      <row title="About" subtitle="What this app is and how it grows" routerLink="/about"></row>
+    </list>
+    <p>Rangular framework 0.1.2</p>
+  </drawer>
   <h1>Learn Rangular</h1>
-  <p>Short lessons, in order. Each lesson has a plain explanation, one code line to remember, and a live demo running on the same screen.</p>
+  <p>Short lessons, in order. Each lesson has a plain explanation, a Code block, and a live demo running on the same screen.</p>
   <card>
     <h3>How to use this tutorial</h3>
-    <p>Start at Lesson 1 and go in order. Tap a lesson, read it, try its demo, then come back for the next one. New lessons arrive in batches, and the list below always shows what is ready.</p>
+    <p>Start at Lesson 1 and go in order. Tap a lesson, read it, try its demo, then come back for the next one. New lessons arrive in batches, and the list below always shows what is ready. The menu at the top left holds the About screen.</p>
   </card>
   <label>Getting started: lessons 1 to 5</label>
   <list>
@@ -13,8 +22,4 @@
     <h3>Coming next</h3>
     <p>The next batch will cover lists with ngFor, showing and hiding with ngIf in depth, child components with inputs and outputs, and services. Later batches follow the Angular documentation, topic by topic, each with its Rangular equivalent.</p>
   </card>
-  <label>More</label>
-  <list>
-    <row title="About this app" subtitle="What it is, how it grows, and the store plan" routerLink="/about"></row>
-  </list>
 </section>
